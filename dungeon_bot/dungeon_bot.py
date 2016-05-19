@@ -57,8 +57,8 @@ def lobby_event_lover_callback(lobby):
 class DungeonBot(object):
 
 	allowed_commands = {
-		"examine": "shows your stats", 
-		"ex": "shows your stats", 
+		"examine": "shows your stats",
+		"ex": "shows your stats",
 		"stats": "shows your stats",
 		"st": "shows your stats",
 		"info": "shows help",
@@ -79,7 +79,7 @@ class DungeonBot(object):
 		"chat": "joins global chat",
 		"dev [message]": "sends a message to the developers, use in case of errors or bugs",
 		"bug [message]": "sends a message to the developers, use in case of errors or bugs",
-		"close keyboard": "closes custom keyboard", "open keyboard": "opens custom keyboard", 
+		"close keyboard": "closes custom keyboard", "open keyboard": "opens custom keyboard",
 	}
 
 	custom_keyboard_status = { #"userid": "show"/"close"/"never show"
@@ -105,7 +105,7 @@ class DungeonBot(object):
 
 		with open("data/notifications.json") as f:
 			notfications_plaintext = f.read()
-			self.notifications = json.loads(notfications_plaintext) 
+			self.notifications = json.loads(notfications_plaintext)
 		print("Notifications loaded:\n%s"%("\n".join(["%s : %s"%(notification["id"], notification["text"]) for notification in self.notifications])))
 		DungeonBot.instance = self
 
@@ -167,6 +167,9 @@ class DungeonBot(object):
 			if len(args) != 0:
 				lobby_uid = args[0]
 			return(self.join_lobby(user, lobby_uid))
+		elif (command in ["listapl"]):
+			for player in persistence_controller.players:
+				print(player)
 		elif (command in ["reset_character"]):
 			character = ""
 			if len(args) != 0:
@@ -217,7 +220,7 @@ class DungeonBot(object):
 					message = update.message
 					close_enough = self.time_started - datetime.timedelta(minutes=5)
 					if datetime.datetime.fromtimestamp(message.date) >= close_enough:
-						if not message.text or not only_roman_chars(message.text): 
+						if not message.text or not only_roman_chars(message.text):
 							self.api.sendMessage(message.from_user.id, "There was some error processing your message.\nPlease use English only.")
 						else:
 							self.on_message(message)
@@ -276,7 +279,7 @@ class DungeonBot(object):
 
 	def send_message(self, user, message):
 		reply_markup = ReplyKeyboardHide(True)
-		if persistence_controller.is_registered(user): 
+		if persistence_controller.is_registered(user):
 			ply = persistence_controller.get_ply(user)
 			for notification in self.notifications:
 				if ply.last_read_notification_id < notification["id"]:
@@ -294,7 +297,7 @@ class DungeonBot(object):
 		user = message.from_user
 		try:
 			#check if player is registered
-			if not persistence_controller.is_registered(user): 
+			if not persistence_controller.is_registered(user):
 				if str(user.id) in DungeonBot.registration_events.keys():
 					command, args = parse_command(message.text)
 					response = DungeonBot.registration_events[str(user.id)].handle_command(user, command, *args)
@@ -339,7 +342,7 @@ class DungeonBot(object):
 		new_player = Player(user.id, None) #Create an empty player object
 
 		registration = RegistrationEvent(registration_over_callback, new_player, user) #Create a registration event
-		DungeonBot.registration_events[str(user.id)] = registration 
+		DungeonBot.registration_events[str(user.id)] = registration
 		DungeonBot.events[registration.uid] = registration #add event to collection of events
 		self.send_message(user, registration.greeting_message)
 		logger.debug("Registration event %s created"%(registration.uid))
@@ -390,7 +393,7 @@ class DungeonBot(object):
 			if len(open_lobbes) > 0:
 				lobby_uid = random.choice(open_lobbes)#select random lobby
 			else:
-				lobby_uid = self.new_crawl_lobby(1) 
+				lobby_uid = self.new_crawl_lobby(1)
 		if not lobby_uid in list(DungeonBot.lobbies.keys()):
 			return "No such lobby!"
 
