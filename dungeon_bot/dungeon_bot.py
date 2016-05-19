@@ -132,7 +132,7 @@ class DungeonBot(object):
 		return msg
 
 	def handle_command(self, user, command, *args):
-		print("comando" + command)
+		print("comando: " + command,comand == 'listapl')
 		if (command in ["examine","ex","stats","st"]):
 			argument = " ".join(args).lower()
 			if len(args) == 0 or argument=="self" or argument == str(user.id) or argument.lower() == persistence_controller.get_ply(user).name.lower():
@@ -202,7 +202,7 @@ class DungeonBot(object):
 			#command = command.split(" ")[0]
 			return self.handle_command(user, command, *args)
 				
-		return 'Unknown command, try "help".'
+		return 'Unknown command, try "help"..'
 
 	def start_main_loop(self):
 		#start dead event collection timer
