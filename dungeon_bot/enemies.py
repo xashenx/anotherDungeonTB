@@ -1528,6 +1528,7 @@ def peasant_pack(size=None, special_enemy = None):
 
     thieves = []
     thug_enemies = []
+    np_enemies = []
     desc = ""
     if special_enemy:
         if special_enemy == "thief":
@@ -1544,6 +1545,8 @@ def peasant_pack(size=None, special_enemy = None):
                 thug_enemies, desc = thugs("strong")
             elif size == "huge" and random.randint(0, 10) > 4:
                 thug_enemies, desc = thugs("very strong")
+        elif special_enemy == "ninjapirate":
+            np_enemies, desc = ninjapirate()
     peasants += thieves
     peasants += thug_enemies
     description += desc
@@ -1655,6 +1658,13 @@ def merc_mages(size=None):
     return mages, description
 
 
+def ninjapirate(size = None):
+    enemy_level = list(range(1, 5))
+    enemy = YoungNinjaPirate(random.choice(enemy_level))
+    description = "A young Ninja-Pirate. Yaaahhrr-uataaa\n"
+    return [enemy], description
+
+
 def thief(size = None):
     if size == "strong":
         thief_levels = list(range(10, 20))
@@ -1755,7 +1765,8 @@ enemy_tables = { # difficulty rating: (function to get enemy or enemy group, par
     },
     "human": {
         "1": (peasant_pack,[] ),
-        "5": (peasant_pack,["small"] ),
+        "1": (peasant_pack,[None, "ninjapirate"] ),
+        "5": (peasant_pack,["small"]),
         "5": (thugs, []),
         "10": (thief, [] ),
         "5": (mercenary_pack,[] ),
