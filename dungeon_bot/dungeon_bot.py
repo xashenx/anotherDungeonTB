@@ -132,7 +132,6 @@ class DungeonBot(object):
 		return msg
 
 	def handle_command(self, user, command, *args):
-		print("comando: " + command,command == 'listapl')
 		if (command in ["examine","ex","stats","st"]):
 			argument = " ".join(args).lower()
 			if len(args) == 0 or argument=="self" or argument == str(user.id) or argument.lower() == persistence_controller.get_ply(user).name.lower():
@@ -168,7 +167,7 @@ class DungeonBot(object):
 			if len(args) != 0:
 				lobby_uid = args[0]
 			return(self.join_lobby(user, lobby_uid))
-		elif (command in ["listapl"]):
+		elif (command == 'listapl'):
 			for player in persistence_controller.players:
 				print(player)
 		elif (command in ["reset_character"]):
