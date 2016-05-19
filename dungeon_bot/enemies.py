@@ -812,7 +812,7 @@ class Peasant(Enemy):
 
         return attack_infos
 
-young_ninja_pirate_characteristics = {
+ninja_pirate_characteristics = {
     "strength": 3,  # how hard you hit
     "vitality": 3,  # how much hp you have
     "dexterity": 5,  # how fast you act, your position in turn queue
@@ -820,7 +820,7 @@ young_ninja_pirate_characteristics = {
 }
 
 
-class YoungNinjaPirate(Enemy):
+class NinjaPirate(Enemy):
     drop_table = {
         "club": 7,
         "dagger": 7,
@@ -837,8 +837,8 @@ class YoungNinjaPirate(Enemy):
     loot_coolity = 0.3
 
     def __init__(self, level=1, name="young pirate-ninja",
-        characteristics=young_ninja_pirate_characteristics, stats=None,
-        description="A young Ninja-Pirate. Yhaaar-uataaa", inventory=[],
+        characteristics=ninja_pirate_characteristics, stats=None,
+        description="A Ninja-Pirate. Yhaaar-uataaa", inventory=[],
         equipment=default_equipment,
         tags=["human", "living", "animate", "humanoid"],
         abilities=[], modifiers=[], exp_value=100):
@@ -1546,7 +1546,10 @@ def peasant_pack(size=None, special_enemy = None):
             elif size == "huge" and random.randint(0, 10) > 4:
                 thug_enemies, desc = thugs("very strong")
         elif special_enemy == "ninjapirate":
-            np_enemies, desc = ninjapirate()
+            if size == "small" and random.randint(0, 10) > 4:
+                np_enemies, desc = ninjapirate()
+            else:
+                np_enemies, desc = ninjapirate("young")
     peasants += thieves
     peasants += thug_enemies
     description += desc
@@ -1658,10 +1661,15 @@ def merc_mages(size=None):
     return mages, description
 
 
-def ninjapirate(size = None):
-    enemy_level = list(range(1, 5))
-    enemy = YoungNinjaPirate(random.choice(enemy_level))
-    description = "A young Ninja-Pirate. Yaaahhrr-uataaa\n"
+def ninjapirate(size=None):
+    if size == "young":
+        enemy_level = list(range(1, 3))
+        enemy = NinjaPirate(random.choice(enemy_level))
+        description = "A young Ninja-Pirate. Yaaahhrr-uataaa\n"
+    else:
+        enemy_level = list(range(3, 6))
+        enemy = NinjaPirate(random.choice(enemy_level))
+        description = "A Ninja-Pirate. Yaaahhrr-uataaa\n"
     return [enemy], description
 
 
@@ -1767,6 +1775,7 @@ enemy_tables = { # difficulty rating: (function to get enemy or enemy group, par
         "1": (peasant_pack,[] ),
         "1": (peasant_pack,[None, "ninjapirate"] ),
         "5": (peasant_pack,["small"]),
+        "5": (peasant_pack,["small", "ninjapirate"] ),
         "5": (thugs, []),
         "10": (thief, [] ),
         "5": (mercenary_pack,[] ),
