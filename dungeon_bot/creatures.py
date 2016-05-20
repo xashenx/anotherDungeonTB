@@ -1007,13 +1007,17 @@ class Creature(object):
 		return big_dict
 
 class Player(Creature):
-	def __init__(self, userid, name, level=1, characteristics = default_characteristics, stats=None, description=None, inventory=[], equipment=default_equipment, tags=["animate", "living", "humanoid", "human"],abilities=[],modifiers=[], level_perks=[], experience=0, level_up_points=0, perk_points=0, last_read_notification_id = -1):
+	def __init__(self, userid, name, killing_blows=0,deaths=0, level=1, characteristics = default_characteristics, stats=None, description=None, inventory=[], equipment=default_equipment, tags=["animate", "living", "humanoid", "human"],abilities=[],modifiers=[], level_perks=[], experience=0, level_up_points=0, perk_points=0, last_read_notification_id = -1):
 		self.level_perks = level_perks.copy()
 		self._experience = experience
 		self.level_up_points = level_up_points
 		self.perk_points = perk_points
 		self.userid = str(userid)
 		self.last_read_notification_id = last_read_notification_id
+		## added by ashen
+		self.killing_blows = killing_blows
+		self.deaths = 0
+		## end
 		Creature.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities, modifiers)
 
 	@property
@@ -1102,13 +1106,16 @@ class Player(Creature):
 
 		if not "last_read_notification_id" in data:
 			data["last_read_notification_id"] = -1
-		ply = Player(data.get("userid"), data.get("name"), data.get("_level"), data.get("characteristics"), stats, data.get("description"), data.get("inventory"), data.get("equipment"), data.get('tags'), [], [], [], data.get("_experience"), data.get("level_up_points"), data.get("perk_points"), data.get("last_read_notification_id"))
+		ply = Player(data.get("userid"), data.get("name"), data.get("killing_blows"), data.get("deaths"), data.get("_level"), data.get("characteristics"), stats, data.get("description"), data.get("inventory"), data.get("equipment"), data.get('tags'), [], [], [], data.get("_experience"), data.get("level_up_points"), data.get("perk_points"), data.get("last_read_notification_id"))
 		level_perks = [level_perks_listing[name](ply) for name in data["level_perks"]]
 		ply.level_perks = level_perks
 		ply.refresh_derived()
 		return ply
 
 
+	def on_death(self, attack_info):
+		self.deaths += 1
+		return super(Player, self).on_death(attack_info)
 
 	def on_kill(self, attack_info):
 		target = attack_info.target
@@ -1123,6 +1130,7 @@ class Player(Creature):
 					else:
 						attack_info.description += "!!\t%s got loot: %s, but didn't have enough space in inventory.\n"%(loot_goes_to.name.capitalize(), item.name)
 				attack_info.use_info["loot_dropped"].append(item)
+		self.killing_blows += 1
 		return super(Player, self).on_kill(attack_info)
 
 	def to_json(self):

@@ -508,6 +508,62 @@ class UndeadWarLeader(Enemy):
                     break
         return attack_infos
 
+
+undead_ninja_pirate_characteristics = {
+    "strength": 4, #how hard you hit
+    "vitality": 4, #how much hp you have
+    "dexterity": 5, #how fast you act, your position in turn queue
+    "intelligence": 4, #how likely you are to strike a critical
+}
+
+class UndeadNinjaPirate(Enemy):
+    drop_table = {
+        "chainmail" : 7,
+        "plate armor" : 4,
+        "primary weapon" : 3,
+        "sword": 7,
+        "mace": 7,
+        "club": 5,
+        "dagger": 5,
+        "secondary weapon" : 3,
+        "bone amulet" : 3,
+        "ring" : 3,
+        "talisman": 4,
+        "iron helmet": 3,
+        "bone ring" : 3,
+        "headwear": 5,
+        "random": 3,
+        "claymore": 4,
+    }
+
+    loot_coolity = 0.3
+    def __init__(self, level=1, name="undead ninja pirate", characteristics = undead_ninja_pirate_characteristics, stats=None, description="An undead ninja pirate.", inventory=[], equipment=default_equipment, tags=["animate", "humanoid", "undead", "slow"],abilities=[],modifiers=[], exp_value=100):
+        Enemy.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities, modifiers, exp_value)
+        items = [get_item_by_name( random.choice(["sword", "mace", "claymore"]), 0 )]
+        items.append( get_item_by_name( "targe shield", 0 ) ) if random.randint(0,10) > 7 else None
+        items.append( get_item_by_name( "chainmail" , 0 ) ) if random.randint(0,10) > 2 else items.append( get_item_by_name( "plate armor" , 0 ) )
+        items.append( get_item_by_name( random.choice(["iron helmet", "bronze crown"]), 0) ) if random.randint(0,10) > 2 else None
+        for item in items:
+            if self.add_to_inventory(item):
+                self.equip(item, True)
+
+    def act(self, combat_event):
+        attack_infos = []
+
+        if not self.target or self.target.dead:
+            self.select_target(combat_event)
+        if self.target and not self.target.dead:
+            for ability in self.abilities:
+                while self.energy >= ability.energy_required:
+                    attack_infos.append(ability.__class__.use(self, self.target, ability.granted_by, combat_event))
+                    if not self.target or self.target.dead:
+                        break
+                if not self.target or self.target.dead:
+                        break
+
+        return attack_infos
+
+
 undead_knight_characteristics = {
     "strength": 4, #how hard you hit
     "vitality": 4, #how much hp you have
@@ -1142,6 +1198,7 @@ enemy_list = { #name to enemy
     "bear": Bear,
     "undead soldier": UndeadSoldier,
     "undead knight": UndeadKnight,
+    "undead ninja pirate": UndeadNinjaPirate,
     "undead legionaire": UndeadLegionaire,
     "undead warleader": UndeadWarLeader,
     "undead siren": UndeadSiren,
@@ -1152,6 +1209,7 @@ enemy_list = { #name to enemy
     "lesser demon": LesserDemon,
     "beta demon": BetaDemon,
     "peasant": Peasant,
+    "ninja pirate": NinjaPirate,
     "mercenary": Mercenary,
     "mercenary spearman": MercenarySpearman,
     "mercenary leader": MercenaryLeader,
@@ -1320,7 +1378,15 @@ def undead_soldier_pack(size=None, special_enemy=None):
                 siren_group, desc = undead_siren()
     special_enemies += lich_group + siren_group
     description += desc
-    soldiers = [ UndeadSoldier(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + special_enemies
+    for x in range(amount + 1):
+        if random.randint(0, 10) < 7:
+            troups += UndeadLegionaire(random.choice(levels))
+        elif random.randint(0, 10) < 5:
+            troups += UndeadNinjaPirate(random.choice(levels))
+        else:
+            troups += UndeadKnight(random.choice(levels))
+    soldiers = troups + special_enemies
+    #soldiers = [ UndeadSoldier(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + special_enemies
 
     return soldiers, description
 
@@ -1350,6 +1416,7 @@ def undead_legionaire_pack(size=None, special_enemy=None):
     special_enemies = []
     lich_group = []
     siren_group = []
+    troups = []
     if special_enemy:
         if special_enemy == "lich":
             if size == "big" and random.randint(0, 10) > 6:
@@ -1367,7 +1434,15 @@ def undead_legionaire_pack(size=None, special_enemy=None):
                 siren_group, desc = undead_siren()
     special_enemies += lich_group + siren_group
     description += desc
-    soldiers = [ UndeadLegionaire(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + siren_group
+    for x in range(amount + 1):
+        if random.randint(0, 10) < 7:
+            troups += UndeadLegionaire(random.choice(levels))
+        elif random.randint(0, 10) < 5:
+            troups += UndeadNinjaPirate(random.choice(levels))
+        else:
+            troups += UndeadKnight(random.choice(levels))
+    soldiers = troups + special_enemies
+    #soldiers = [ UndeadLegionaire(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + siren_group
 
     return soldiers, description
 
