@@ -1361,6 +1361,7 @@ def undead_soldier_pack(size=None, special_enemy=None):
     special_enemies= []
     lich_group = []
     siren_group = []
+    troups =  []
     if special_enemy:
         if special_enemy == "lich":
             if size == "big" and random.randint(0, 10) > 6:
