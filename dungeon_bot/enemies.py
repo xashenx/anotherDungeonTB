@@ -1381,11 +1381,11 @@ def undead_soldier_pack(size=None, special_enemy=None):
     description += desc
     for x in range(amount + 1):
         if random.randint(0, 10) < 7:
-            troups += UndeadLegionaire(random.choice(levels))
+            troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
-            troups += UndeadNinjaPirate(random.choice(levels))
+            troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
-            troups += UndeadKnight(random.choice(levels))
+            troups += [UndeadKnight(random.choice(levels))]
     soldiers = troups + special_enemies
     #soldiers = [ UndeadSoldier(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + special_enemies
 
@@ -1437,11 +1437,11 @@ def undead_legionaire_pack(size=None, special_enemy=None):
     description += desc
     for x in range(amount + 1):
         if random.randint(0, 10) < 7:
-            troups += UndeadLegionaire(random.choice(levels))
+            troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
-            troups += UndeadNinjaPirate(random.choice(levels))
+            troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
-            troups += UndeadKnight(random.choice(levels))
+            troups += [UndeadKnight(random.choice(levels))]
     soldiers = troups + special_enemies
     #soldiers = [ UndeadLegionaire(random.choice(levels)) if random.randint(0, 10) < 7 else UndeadKnight(random.choice(levels)) for x in range(amount+1)] + siren_group
 
