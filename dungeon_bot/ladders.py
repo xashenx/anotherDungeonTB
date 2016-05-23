@@ -98,8 +98,8 @@ def get_deaths_ladder(players):
         while position < 3 and goon:
             if ladderLen >= position + 1:
                 # we already have a player at this position
-                if plDeaths >= players[ladder[position]].deaths:
-                    if plDeaths > players[ladder[position]].deaths or \
+                if plDeaths <= players[ladder[position]].deaths:
+                    if plDeaths < players[ladder[position]].deaths or \
                     plLvl > players[ladder[position]].level:
                         index = position + 1
                         uidToMove = ladder[position]

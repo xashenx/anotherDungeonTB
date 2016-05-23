@@ -23,8 +23,14 @@ class Dungeon(object):
         else:
             self.difficulty = difficulty
         log_time = time.strftime('[%d/%m/%y %H:%M:%S] ')
-        print(log_time + "dungeon create with pl: ", self.players)
-        print(log_time + "dungeon difficulty = %d" % (self.difficulty))
+        player_names = ''
+        for player in self.players:
+            if(players.index(player) == len(players) - 1):
+                player_names += player.name
+            else:
+                player_names += player.name + ', '
+        print(log_time + 'dungeon create with [' + player_names + ']')
+        print(log_time + 'dungeon difficulty = %d' % (self.difficulty))
 
     @staticmethod
     def new_dungeon(players):
