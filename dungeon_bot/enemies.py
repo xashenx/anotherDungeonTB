@@ -1312,7 +1312,7 @@ class MercenaryMage(Enemy):
             if self.add_to_inventory(item):
                 self.equip(item, True)
 
-        spells = ["heal", "fireball", "lightning", "mass pain", "revive"]
+        spells = ["heal", "fireball", "lightning", "mass pain", "raise dead"]
         for spell in spells:
             self.base_abilities.append(abilities_listing[spell](spell, None))
 
@@ -1321,7 +1321,7 @@ class MercenaryMage(Enemy):
 
         for c in combat_event.enemies:
             if c.dead:
-                ability = [x for x in self.abilities if x.name == "revive"][0]
+                ability = [x for x in self.abilities if x.name == "raise dead"][0]
                 if self.energy >= ability.energy_required:
                     attack_infos.append(ability.__class__.use(self,
                         c, ability.granted_by, combat_event))
@@ -2121,6 +2121,8 @@ enemy_tables = {
         "55": (mercenary_pack, ["huge", "thief"]),
         "55": (mercenary_pack, ["huge", "mages"]),
         "55": (mercenary_pack, ["huge", "leader"]),
+        "55": (merc_mages, ["huge"]),
+        "55": (merc_mages, ["huge"]),
     },
 
 }

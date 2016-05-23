@@ -23,7 +23,7 @@ Tags:
 	undead - Undead creatures
 	animal - Animal creatures
 	rodent - Rat creatures and similar
-	demon - Demon creatures 
+	demon - Demon creatures
 
 
 """
@@ -62,7 +62,7 @@ class AbilityUseInfo(object):
 			self = self.inhibitor.on_attack(self)
 			self = self.target.on_attacked(self)
 			if random.randint(1, 100) > use_info["hit_chance"]:
-				self.description += self.prototype_class.get_miss_description(self) 
+				self.description += self.prototype_class.get_miss_description(self)
 				self = self.inhibitor.on_miss(self)
 			else:
 				use_info["did_hit"] = True
@@ -97,11 +97,11 @@ class AbilityUseInfo(object):
 
 		if "modifiers_applied" in self.use_info.keys():
 			for modifier in use_info["modifiers_applied"]:
-				self.description += modifier.apply() 
+				self.description += modifier.apply()
 
 		#if "experience_gained" in use_info and use_info["experience_gained"] > 0:
 		#	if not hasattr(self.inhibitor, "exp_value"):
-		#		msg, value = self.inhibitor.on_experience_gain( use_info["experience_gained"] ) 
+		#		msg, value = self.inhibitor.on_experience_gain( use_info["experience_gained"] )
 		#		self.description += msg
 		#		self.description += self.inhibitor.add_experience(value)
 		return self
@@ -239,7 +239,7 @@ class Ability(object):
 			use_info.use_info["hit_chance"] = clamp( use_info.prototype_class.get_chance_to_hit(use_info.inhibitor, use_info.target, use_info.use_info["item_used"]), 5, 95)
 
 		#	if random.randint(1, 100) > use_info.use_info["hit_chance"]:
-				#use_info.description += use_info.prototype_class.get_miss_description(use_info) 
+				#use_info.description += use_info.prototype_class.get_miss_description(use_info)
 			#else:
 			#	use_info.use_info["did_hit"] = True
 			#use_info.use_info["damage_dealt"] = use_info.prototype_class.get_damage(use_info.inhibitor, use_info.target, use_info.use_info["item_used"])
@@ -322,8 +322,8 @@ class Smash(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Smash)
 		else:
@@ -405,8 +405,8 @@ class Bash(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Bash)
 		else:
@@ -459,7 +459,7 @@ class Crush(Ability):
 
 	dmg = ?
 
-	avg chance to hit = ? 
+	avg chance to hit = ?
 
 	avg dmg = ?
 
@@ -475,8 +475,8 @@ class Crush(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Crush)
 		else:
@@ -536,7 +536,7 @@ class Smack(Ability):
 
 	dmg = ?
 
-	avg chance to hit = ? 
+	avg chance to hit = ?
 
 	avg dmg = ?
 
@@ -552,8 +552,8 @@ class Smack(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Smack)
 		else:
@@ -609,8 +609,8 @@ class Smack(Ability):
 class Stab(Ability):
 
 	"""
-	Stabbing attack for swords, daggers, rapiers, pikes, anything pointy. 
-	Effective against unarmoed oponents, very ineffective against armored oponents. 
+	Stabbing attack for swords, daggers, rapiers, pikes, anything pointy.
+	Effective against unarmoed oponents, very ineffective against armored oponents.
 	High chance to hit.
 	Higher chance to hit big and slow oponents.
 
@@ -634,8 +634,8 @@ class Stab(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Stab)
 		else:
@@ -691,7 +691,7 @@ class QuickStab(Ability):
 	"""
 	Exactly like stab, except takes less energy and suffers more penalties for armored opoentns.
 	Stabbing attack for small pointy weapons like daggers.
-	Effective against unarmoed oponents, very ineffective against armored oponents. 
+	Effective against unarmoed oponents, very ineffective against armored oponents.
 	High chance to hit.
 	Higher chance to hit big and slow oponents.
 
@@ -707,7 +707,7 @@ class QuickStab(Ability):
 
 	chance to cause "pain" = ?
 
-	above average dex required to use 
+	above average dex required to use
 
 	"""
 	name = "quick stab"
@@ -719,8 +719,8 @@ class QuickStab(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,QuickStab)
 		else:
@@ -771,10 +771,10 @@ class QuickStab(Ability):
 		attack_info.use_info["item_used"] = weapon
 		return Ability.use(attack_info)
 
-class Cut(Ability): 
+class Cut(Ability):
 	"""
 	Cutting attack for swords, daggers, anything bladed.
-	Effective against unarmored oponents, mediocore against armored oponents. 
+	Effective against unarmored oponents, mediocore against armored oponents.
 	High chance to hit.
 	Higher chance to hit big and slow oponents.
 
@@ -798,8 +798,8 @@ class Cut(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,Cut)
 		else:
@@ -849,11 +849,11 @@ class Cut(Ability):
 		attack_info.use_info["item_used"] = weapon
 		return Ability.use(attack_info)
 
-class QuickCut(Ability): 
+class QuickCut(Ability):
 	"""
 	Exactly like cut, except takes less energy and suffers more penalties for armored opoentns.
 	Cutting attack for small bladed weapons, like daggers.
-	Effective against unarmoed oponents, weak against armored oponents. 
+	Effective against unarmoed oponents, weak against armored oponents.
 	High chance to hit.
 	Higher chance to hit big and slow oponents.
 
@@ -867,7 +867,7 @@ class QuickCut(Ability):
 
 	chance to cause "bleeding" = ?
 
-	above average dex required to use 
+	above average dex required to use
 
 	"""
 	name = "quick cut"
@@ -879,8 +879,8 @@ class QuickCut(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
- 
+			return False, "Target required."
+
 		if not target.dead:
 			return Ability.can_use(user, target,QuickCut)
 		else:
@@ -930,7 +930,7 @@ class QuickCut(Ability):
 		attack_info.use_info["item_used"] = weapon
 		return Ability.use(attack_info)
 
-class ShieldUp(Ability): 
+class ShieldUp(Ability):
 	"""
 	Raise the shield to protect yourself, gain a defense bonus and a pennalty to evasion for one turn.
 
@@ -968,11 +968,11 @@ class ShieldUp(Ability):
 
 
 
-class Sweep(Ability): 
+class Sweep(Ability):
 	"""
 	Sweeping attack for bladed weapons.
-	Hits multiple targets, first target gets the most damage, each next target suffers less damage than previous. 
-	High enemy str or vitality lower effectiveness drastically. 
+	Hits multiple targets, first target gets the most damage, each next target suffers less damage than previous.
+	High enemy str or vitality lower effectiveness drastically.
 
 	avg chance to hit = ?
 	avg dmg = ?
@@ -988,7 +988,7 @@ class Sweep(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
+			return False, "Target required."
 		if not target.dead:
 			return Ability.can_use(user, target,Sweep)
 		else:
@@ -1044,10 +1044,10 @@ class Sweep(Ability):
 
 
 
-class Swing(Ability): 
+class Swing(Ability):
 	"""
 	Swinging attack for blunt weapons.
-	Hits multiple targets, first target gets the msot damage, each next target suffers less damage than previous. 
+	Hits multiple targets, first target gets the msot damage, each next target suffers less damage than previous.
 
 	avg chance to hit = ?
 	avg dmg = ?
@@ -1062,7 +1062,7 @@ class Swing(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
+			return False, "Target required."
 		if not target.dead:
 			return Ability.can_use(user, target,Swing)
 		else:
@@ -1115,7 +1115,7 @@ class Swing(Ability):
 
 """ Magic abilities below """
 
-class Revive(Ability): 
+class Revive(Ability):
 	"""
 	Revive a creature
 
@@ -1149,14 +1149,52 @@ class Revive(Ability):
 
 		if buff_info.target.dead:
 			buff_info.target.dead = False
-			buff_info.target.health = buff_info.target.stats["max_health"] 
+			buff_info.target.health = buff_info.target.stats["max_health"]
 			buff_info.target.refresh_derived()
 
 		buff_info.description += "%s revives %s.\n"%(user.short_desc.capitalize(),target.short_desc.capitalize())
 		return Ability.use(buff_info)
+		
+		
+class RaiseDead(Ability):
+	"""
+	Raises a skeleton from a dead corpse
+
+	"""
+	name = "raise dead"
+	description = "Raises a skeleton."
+	energy_required = 5
+	requirements = None
+	requires_target = "friendly"
+
+	@staticmethod
+	def can_use(user, target=None):
+		return Ability.can_use(user, target,RaiseDead)
+
+	@staticmethod
+	def get_buff_modifiers(use_info):
+		return []
+
+	@staticmethod
+	def get_buff_description(use_info):
+		return ""
+
+	@staticmethod
+	def use(user, target, weapon, combat_event):
+		buff_info = BuffInfo(user, RaiseDead, target, combat_event)
+		buff_info.use_info["item_used"] = None
+
+		if buff_info.target.dead:
+			buff_info.target.dead = False
+			buff_info.target.name = 'undead ' + buff_info.target.name
+			buff_info.target.health = buff_info.target.stats["max_health"]
+			buff_info.target.refresh_derived()
+
+		buff_info.description += "%s raises an undead from from %s\'s body.\n"%(user.short_desc.capitalize(),target.short_desc.capitalize())
+		return Ability.use(buff_info)
 
 
-class Heal(Ability): 
+class Heal(Ability):
 	"""
 	heal a creature
 
@@ -1332,7 +1370,7 @@ class Lightning(Ability):
 		return Ability.use(attack_info)
 
 
-class MassShield(Ability): 
+class MassShield(Ability):
 	"""
 	AOE apply defense bonus to friendlies
 
@@ -1379,7 +1417,7 @@ class MassShield(Ability):
 
 
 
-class MassPain(Ability): 
+class MassPain(Ability):
 	"""
 	AOE apply pain to enemies around
 	"""
@@ -1392,7 +1430,7 @@ class MassPain(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
+			return False, "Target required."
 		if not target.dead:
 			return Ability.can_use(user, target,MassPain)
 		else:
@@ -1433,7 +1471,7 @@ class MassPain(Ability):
 		attack_info.use_info["item_used"] = None
 		return Ability.use(attack_info)
 
-class FearScream(Ability): 
+class FearScream(Ability):
 	"""
 	AOE apply fear to enemies around
 	"""
@@ -1446,7 +1484,7 @@ class FearScream(Ability):
 	@staticmethod
 	def can_use(user, target=None):
 		if not target:
-			return False, "Target required." 
+			return False, "Target required."
 		if not target.dead:
 			return Ability.can_use(user, target,FearScream)
 		else:
@@ -1745,6 +1783,7 @@ abilities_listing = {
 	"vampirism aura": VampireAura,
 	#strict non player abilities below
 	"revive": Revive,
+	"raise dead": RaiseDead,
 
 	# animal abilities below
 	"rodent bite": RodentBite,
