@@ -1016,7 +1016,7 @@ class Player(Creature):
 		self.last_read_notification_id = last_read_notification_id
 		## added by ashen
 		self.killing_blows = killing_blows
-		self.deaths = 0
+		self.deaths = deaths
 		## end
 		Creature.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities, modifiers)
 
