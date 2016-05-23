@@ -437,6 +437,25 @@ item_listing = {
             }
         },
 
+        "cutlass": {
+            "stats": {
+                "damage": ["2d6", "7d6"],
+                "accuracy": ["1d8", "5d6"]
+            },
+            "args": {
+                "name": "cutlass",
+                "description": "Steel cutlass!",
+                "random_effects": True,
+                "abilities_granted": ["cut", "stab"],
+                "requirements": {
+                    "characteristics": {
+                        "strength": 5,
+                        "dexterity": 8
+                    }
+                }
+            }
+        },
+
         "quaterstaff": {
             "stats": {
                 "damage": ["1d3", "2d3"],
@@ -934,6 +953,18 @@ item_listing = {
                 "name": "iron helmet",
                 "description": "Helmet, boring helmet. Makes you look " +
                     "like certain someone from Skyrim though.",
+                "random_effects": True
+            }
+        },
+
+        "skull cap": {
+            "stats": {
+                "defense": ["1d2", "1d4"],
+            },
+            "args": {
+                "name": "skull cap",
+                "description": "Well, a fancy skull cap, that makes you look " +
+                    "like a seasoned sailor! Yaahrr!.",
                 "random_effects": True
             }
         },
