@@ -7,10 +7,10 @@ import random
 
 
 def retrieve_enemies_for_difficulty(enemy_table, difficulty):
-    total_len = 100
-    right = clamp(difficulty + 0.3 * difficulty, 0, 100)
-    left = clamp(difficulty - 0.3 * total_len, 0, 100)
-    candidates = []
+    #total_len = 100
+    right = clamp(difficulty + 0.2 * difficulty, 0, 100)
+    left = clamp(difficulty - 0.2 * difficulty, 0, 100)
+    #candidates = []
     temp_list = sorted([int(x) for x in list(enemy_tables[enemy_table].keys())
      if right >= int(x) > left])
 
