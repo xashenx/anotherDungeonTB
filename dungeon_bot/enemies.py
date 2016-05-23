@@ -24,6 +24,7 @@ def retrieve_enemies_for_difficulty(enemy_table, difficulty):
     random_enemy = temp_list[int(math.floor(random_float))]
 
     enemies = enemy_tables[enemy_table][str(random_enemy)]
+    print(enemies)
     return enemies[0](*enemies[1])
 
 default_equipment = {
@@ -579,31 +580,18 @@ class UndeadWarLeader(Enemy):
 
 
 undead_ninja_pirate_characteristics = {
-    "strength": 4,  # how hard you hit
+    "strength": 7,  # how hard you hit
     "vitality": 4,  # how much hp you have
-    "dexterity": 5,  # how fast you act, your position in turn queue
+    "dexterity": 8,  # how fast you act, your position in turn queue
     "intelligence": 4,  # how likely you are to strike a critical
 }
 
 
 class UndeadNinjaPirate(Enemy):
     drop_table = {
-        "chainmail": 7,
-        "plate armor": 4,
-        "primary weapon": 3,
-        "sword": 7,
-        "mace": 7,
-        "club": 5,
-        "dagger": 5,
-        "secondary weapon": 3,
-        "bone amulet": 3,
-        "ring": 3,
-        "talisman": 4,
-        "iron helmet": 3,
-        "bone ring": 3,
-        "headwear": 5,
-        "random": 3,
-        "claymore": 4,
+        "cutlass": 6,
+        "dagger": 4,
+        "skull cap": 5,
     }
 
     loot_coolity = 0.3
@@ -615,14 +603,10 @@ class UndeadNinjaPirate(Enemy):
         "slow"], abilities=[], modifiers=[], exp_value=100):
         Enemy.__init__(self, name, level, characteristics, stats, description,
             inventory, equipment, tags, abilities, modifiers, exp_value)
-        items = [get_item_by_name(random.choice(["sword", "mace",
-            "claymore"]), 0)]
-        items.append(get_item_by_name("targe shield", 0)) if random.randint(0,
-            10) > 7 else None
-        items.append(get_item_by_name("chainmail", 0)) if random.randint(0,
-            10) > 2 else items.append(get_item_by_name("plate armor", 0))
-        items.append(get_item_by_name(random.choice(["iron helmet",
-            "bronze crown"]), 0)) if random.randint(0, 10) > 2 else None
+        items = [get_item_by_name("cutlass", 0)]
+        items.append(get_item_by_name("dagger", 0)) if random.randint(0,
+            10) > 5 else None
+        items.append(get_item_by_name("skull cap", 0))
         for item in items:
             if self.add_to_inventory(item):
                 self.equip(item, True)
@@ -641,7 +625,6 @@ class UndeadNinjaPirate(Enemy):
                         break
                 if not self.target or self.target.dead:
                         break
-
         return attack_infos
 
 
@@ -1290,7 +1273,6 @@ class Thief(Enemy):
                         break
                 if not self.target or self.target.dead:
                         break
-
         return attack_infos
 
 mercenary_mage_characteristics = {
@@ -1317,6 +1299,7 @@ class MercenaryMage(Enemy):
         description="Fireball for hire,.", inventory=[],
         equipment=default_equipment, tags=["human", "living", "animate",
         "humanoid"], abilities=[], modifiers=[], exp_value=200):
+        print('mercenary mage selected!')
         Enemy.__init__(self, name, level, characteristics, stats, description,
             inventory, equipment, tags, abilities, modifiers, exp_value)
         items = [get_item_by_name(random.choice(["quaterstaff", "dagger"]), 0)]
@@ -1329,7 +1312,7 @@ class MercenaryMage(Enemy):
             if self.add_to_inventory(item):
                 self.equip(item, True)
 
-        spells = ["heal", "fireball", "lightning", "mass pain"]
+        spells = ["heal", "fireball", "lightning", "mass pain", "revive"]
         for spell in spells:
             self.base_abilities.append(abilities_listing[spell](spell, None))
 
@@ -1337,6 +1320,11 @@ class MercenaryMage(Enemy):
         attack_infos = []
 
         for c in combat_event.enemies:
+            if c.dead:
+                ability = [x for x in self.abilities if x.name == "revive"][0]
+                if self.energy >= ability.energy_required:
+                    attack_infos.append(ability.__class__.use(self,
+                        c, ability.granted_by, combat_event))
             if not c.dead and c.health < c.stats["max_health"] and not \
                 "regeneration" in [modifier.name for modifier in c.modifiers]:
                 ability = [x for x in self.abilities if x.name == "heal"][0]
@@ -1619,6 +1607,7 @@ def undead_soldier_pack(size=None, special_enemy=None):
         if random.randint(0, 10) < 7:
             troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
+            print('undead ninjaaa')
             troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
             troups += [UndeadKnight(random.choice(levels))]
@@ -1676,6 +1665,7 @@ def undead_legionaire_pack(size=None, special_enemy=None):
         if random.randint(0, 10) < 7:
             troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
+            print('undead ninjaaa')
             troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
             troups += [UndeadKnight(random.choice(levels))]
@@ -2068,9 +2058,13 @@ enemy_tables = {
         "30": (undead_soldier_pack, ["huge"]),
         "40": (undead_warleader, []),
         "50": (lich, ["very strong"]),
-        "60": (undead_soldier_pack, ["huge", "lich"]),
-        "60": (undead_soldier_pack, ["huge", "siren"]),
+        "50": (undead_soldier_pack, ["huge", "lich"]),
+        "50": (undead_soldier_pack, ["huge", "siren"]),
+        "55": (undead_legionaire_pack, ["big", "lich"]),
+        "55": (undead_legionaire_pack, ["big", "siren"]),
         "60": (undead_warleader, ["strong"]),
+        "75": (undead_legionaire_pack, ["huge", "lich"]),
+        "75": (undead_legionaire_pack, ["huge", "siren"]),
         "80": (undead_warleader, ["very strong"]),
     },
     "demon": {
@@ -2122,6 +2116,7 @@ enemy_tables = {
         "40": (mercenary_leader, ["very strong"]),
         "50": (peasant_pack, ["huge", "thugs"]),
         "50": (peasant_pack, ["huge", "thief"]),
+        "50": (merc_mages, ["huge"]),
         "55": (mercenary_pack, ["huge", "thugs"]),
         "55": (mercenary_pack, ["huge", "thief"]),
         "55": (mercenary_pack, ["huge", "mages"]),

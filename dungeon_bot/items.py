@@ -439,8 +439,8 @@ item_listing = {
 
         "cutlass": {
             "stats": {
-                "damage": ["2d6", "7d6"],
-                "accuracy": ["1d8", "5d6"]
+                "damage": ["3d3", "8d3"],
+                "accuracy": ["1d6", "5d6"]
             },
             "args": {
                 "name": "cutlass",
