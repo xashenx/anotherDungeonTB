@@ -1444,7 +1444,7 @@ class VampireAura(Ability):
         grants vampirism to an ally
     """
     name = "vampirism aura"
-    description = "Let a creature heal themselves."
+    description = "Let a creature heal itself."
     energy_required = 3
     requirements = None
     requires_target = "friendly"
