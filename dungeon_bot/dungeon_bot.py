@@ -194,7 +194,7 @@ class DungeonBot(object):
                 position += 1
                 response += str(position) + ": " + players[uid].name
                 response += " (Lv." + str(players[uid].level)
-                response += " Exp.%.0f" % players[uid].experience() + ")\n"
+                response += " Exp.%.0f" % players[uid].experience + ")\n"
             # killing blows ladder
             ladder_kb = get_kb_ladder(players)
             position = 0
