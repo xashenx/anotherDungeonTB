@@ -54,9 +54,6 @@ class Creature(object):
         self.dead = False
 
 
-
-
-
     def get_stats_from_characteristics(self, characteristics): #stats are completely derived from characteristics
         stats =  {
             "health": 0,
@@ -1198,3 +1195,21 @@ class Enemy(Creature):
 
         en =  Enemy(data.get("name"), data.get("level"), data.get("characteristics"), stats, data.get("description"), inventory, equipment, data.get('tags'), [], [])
         return en
+
+
+class Boss(Enemy):
+    def __init__(self, name, level=1, characteristics = default_characteristics, stats=None, description=None, inventory=[], equipment=default_equipment, tags=[],abilities=[],modifiers=[], exp_value=0):
+        Creature.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities, modifiers)
+        self.target = None
+        self.exp_value = exp_value
+        self.event = None
+
+    def select_target(self, combat_event):
+        alive_players = [x for x in combat_event.turn_queue if isinstance(x, Player)]
+        if len(alive_players) > 0:
+            self.target = random.choice(alive_players)
+        else:
+            self.target = None
+
+    def act(self):
+        return [] #base enemy has no ai
