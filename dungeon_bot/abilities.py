@@ -442,26 +442,26 @@ class Smash(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        weapon_dmg = diceroll(weapon.stats["damage"])
-        strength = user.characteristics["strength"]
-        # BEGIN comment by Ashen -- not used lines --
+        # **** BEGIN comment by Ashen -- not used lines -- ****
         #defense = target.defense
         #is_armored = int("armor" in target.tags) * 0.2
         #is_heavy_armored = int("heavy armor" in target.tags) * 0.4
-        # END comment
+        # **** END comment ****
+        weapon_dmg = diceroll(weapon.stats["damage"])
+        strength = user.characteristics["strength"]
         dmg = clamp(weapon_dmg * strength, user.characteristics["strength"]
             / 2, 99999999)
         return dmg
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        # BEGIN comment by Ashen -- not used lines --
+        # **** BEGIN comment by Ashen -- not used lines -- ****
         #is_small = int("small" in target.tags)*2
         #is_quick = int("quick" in target.tags)*2
         #is_big = int("big" in target.tags)*2
         #is_slow = int("slow" in target.tags)*2
         #dexterity = user.characteristics["dexterity"]
-        # END comment
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -605,14 +605,14 @@ class Crush(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        weapon_dmg = diceroll(weapon.stats["damage"])
-        strength = user.characteristics["strength"]
-        vitality = user.characteristics["vitality"]
         # **** BEGIN comment by Ashen -- not used lines -- ****
         #defense = target.defense
         #is_armored = int("armor" in target.tags) * 0.2
         #is_heavy_armored = int("heavy armor" in target.tags) * 0.4
         # **** END comment ****
+        weapon_dmg = diceroll(weapon.stats["damage"])
+        strength = user.characteristics["strength"]
+        vitality = user.characteristics["vitality"]
         dmg = clamp(weapon_dmg * strength * clamp(int(vitality / 4), 1, 2),
             user.characteristics["strength"] / 2, 99999999)
         return dmg
@@ -693,9 +693,11 @@ class Smack(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.4
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.2
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.4
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.2
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dexterity = user.characteristics["dexterity"]
@@ -707,11 +709,13 @@ class Smack(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*2
-        is_slow = int("slow" in target.tags)*2
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*2
+        #is_slow = int("slow" in target.tags)*2
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -764,9 +768,11 @@ class Stab(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense * 1.5
-        is_armored = int("armor" in target.tags) * 0.5
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.8
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense * 1.5
+        #is_armored = int("armor" in target.tags) * 0.5
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.8
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         not_armored = int(not "armor" in target.tags
@@ -777,11 +783,13 @@ class Stab(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -855,11 +863,13 @@ class QuickStab(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense * 1.5
-        is_armored = int("armor" in target.tags) * 0.6
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.9
-        not_armored = int(not "armor" in target.tags and
-            not "heavy armor" in target.tags)
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense * 1.5
+        #is_armored = int("armor" in target.tags) * 0.6
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.9
+        #not_armored = int(not "armor" in target.tags and
+            #not "heavy armor" in target.tags)
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dmg = clamp(weapon_dmg * (strength / 2),
@@ -868,11 +878,13 @@ class QuickStab(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -942,9 +954,11 @@ class Cut(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.4
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.7
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.4
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.7
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         not_armored = int(not "armor" in target.tags and
@@ -955,11 +969,13 @@ class Cut(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1032,10 +1048,13 @@ class QuickCut(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.6
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.9
-        not_armored = int(not "armor" in target.tags and not "heavy armor" in target.tags)
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.6
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.9
+        #not_armored = int(not "armor" in target.tags and
+            #not "heavy armor" in target.tags)
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dmg = clamp(weapon_dmg * (strength / 2),
@@ -1044,11 +1063,13 @@ class QuickCut(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1148,10 +1169,13 @@ class Sweep(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.4
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.7
-        not_armored = int(not "armor" in target.tags and not "heavy armor" in target.tags)
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.4
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.7
+        #not_armored = int(not "armor" in target.tags and
+            #not "heavy armor" in target.tags)
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         target_str = target.characteristics["strength"]
@@ -1162,13 +1186,15 @@ class Sweep(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
-        target_str = target.characteristics["strength"]
-        target_vit = target.characteristics["vitality"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        #target_str = target.characteristics["strength"]
+        #target_vit = target.characteristics["vitality"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1228,10 +1254,13 @@ class Swing(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.4
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.7
-        not_armored = int(not "armor" in target.tags and not "heavy armor" in target.tags)
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.4
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.7
+        #not_armored = int(not "armor" in target.tags and
+            #not "heavy armor" in target.tags)
+        # **** END comment ****
         weapon_dmg = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dmg = clamp(weapon_dmg * strength,
@@ -1240,11 +1269,13 @@ class Swing(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)*2
-        is_quick = int("quick" in target.tags)*2
-        is_big = int("big" in target.tags)*3
-        is_slow = int("slow" in target.tags)*3
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)*2
+        #is_quick = int("quick" in target.tags)*2
+        #is_big = int("big" in target.tags)*3
+        #is_slow = int("slow" in target.tags)*3
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1700,8 +1731,10 @@ class FearScream(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        intelligence = user.characteristics["intelligence"]
-        target_int = target.characteristics["intelligence"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #intelligence = user.characteristics["intelligence"]
+        #target_int = target.characteristics["intelligence"]
+        # **** END comment ****
         #random_mult = diceroll("1d10")
         chance_to_hit = 95
         return chance_to_hit
@@ -1758,22 +1791,26 @@ class RodentBite(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.5
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.8
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.5
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.8
+        # **** END comment ****
         weapon_damage = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
-        dmg = clamp(weapon_damage* strength,
+        dmg = clamp(weapon_damage * strength,
             user.characteristics["strength"], 99999999)
         return dmg
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)
-        is_quick = int("quick" in target.tags)
-        is_big = int("big" in target.tags)
-        is_slow = int("slow" in target.tags)
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)
+        #is_quick = int("quick" in target.tags)
+        #is_big = int("big" in target.tags)
+        #is_slow = int("slow" in target.tags)
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         accuracy = user.get_accuracy(weapon)
         evasion = target.evasion
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1842,9 +1879,11 @@ class AnimalBite(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.2
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.4
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.2
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.4
+        # **** END comment ****
         weapon_damage = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dmg = clamp(weapon_damage * strength,
@@ -1853,11 +1892,13 @@ class AnimalBite(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)
-        is_quick = int("quick" in target.tags)
-        is_big = int("big" in target.tags)
-        is_slow = int("slow" in target.tags)
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)
+        #is_quick = int("quick" in target.tags)
+        #is_big = int("big" in target.tags)
+        #is_slow = int("slow" in target.tags)
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         accuracy = user.get_accuracy(weapon)
         evasion = target.evasion
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
@@ -1929,9 +1970,11 @@ class AnimalClaw(Ability):
 
     @staticmethod
     def get_damage(user, target, weapon):
-        defense = target.defense
-        is_armored = int("armor" in target.tags) * 0.2
-        is_heavy_armored = int("heavy armor" in target.tags) * 0.5
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #defense = target.defense
+        #is_armored = int("armor" in target.tags) * 0.2
+        #is_heavy_armored = int("heavy armor" in target.tags) * 0.5
+        # **** END comment ****
         weapon_damage = diceroll(weapon.stats["damage"])
         strength = user.characteristics["strength"]
         dmg = clamp(weapon_damage * strength,
@@ -1940,11 +1983,13 @@ class AnimalClaw(Ability):
 
     @staticmethod
     def get_chance_to_hit(user, target, weapon):
-        is_small = int("small" in target.tags)
-        is_quick = int("quick" in target.tags)
-        is_big = int("big" in target.tags)
-        is_slow = int("slow" in target.tags)
-        dexterity = user.characteristics["dexterity"]
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #is_small = int("small" in target.tags)
+        #is_quick = int("quick" in target.tags)
+        #is_big = int("big" in target.tags)
+        #is_slow = int("slow" in target.tags)
+        #dexterity = user.characteristics["dexterity"]
+        # **** END comment ****
         evasion = target.evasion
         accuracy = user.get_accuracy(weapon)
         chance_to_hit = clamp(accuracy - evasion, 5, 95)
