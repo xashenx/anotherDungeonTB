@@ -584,6 +584,27 @@ item_listing = {
                 "abilities_granted": ["animal bite"]
             }
         },
+
+        # boss equipment
+        "a very very big maul": {
+            "stats": {
+                "damage": ["2d6", "4d6"],
+                "accuracy": ["1d6", "2d6"]
+            },
+            "args": {
+                "name": "stone maul",
+                "description": "The weapon of the Mighty Farting T., no other creature is supposed to be strong " +
+                        "to use this weapon.",
+                "random_effects": True,
+                "abilities_granted": ["swing", "crush"],
+                "requirements": {
+                    "two handed": True,
+                    "characteristics": {
+                        "strength": 8
+                    }
+                }
+            }
+        },
     },
 
     # SECONDARY WEAPONS SECTION

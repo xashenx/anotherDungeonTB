@@ -1212,4 +1212,8 @@ class Boss(Enemy):
             self.target = None
 
     def act(self):
-        return [] #base enemy has no ai
+        return []  # base enemy has no ai
+
+    def on_death(self, attack_info):
+        self.deaths += 1
+        return super(Player, self).on_death(attack_info)

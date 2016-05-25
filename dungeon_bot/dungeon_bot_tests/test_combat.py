@@ -5,6 +5,7 @@ from .. import abilities
 from ..bot_events import *
 from ..util import *
 from ..enemies import *
+from ..bosses import *
 from ..level_perks import *
 logger = logging.getLogger("dungeon_bot_test_log")
 logger.debug("Test abilities loaded")
@@ -150,12 +151,14 @@ def run_tests():
 	
 	dummy = Dummy(10)
 
-	#ply.refresh_derived()
-	# item = "dagger"
-	# item = get_item_by_name(item)
-	# ply.add_to_inventory(item)
-	# ply.equip(item)
+	ply.refresh_derived()
+	item = "dagger"
+	item = get_item_by_name(item)
+	ply.add_to_inventory(item)
+	ply.equip(item)
 
 	#enemies = mercenary_pack
-	enemies, desc = mercenary_pack("medium")
+	# enemies, desc = mercenary_pack("medium")
+	enemies, desc = farting_t(5, 1)
+	enemies, desc = merc_mages(["small"])
 	controlled_combat_event([ply], enemies)

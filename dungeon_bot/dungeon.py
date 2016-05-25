@@ -53,8 +53,14 @@ class Dungeon(object):
                 pass
             elif room_type == "combat":
                 enemy_type = random.choice(self.enemy_types)
-                room.combat_enemies, room.description = \
-                    retrieve_enemies_for_difficulty(enemy_type, self.difficulty)
+                if i != amount:
+                    print('stanza: ', i)
+                    room.combat_enemies, room.description = retrieve_enemies_for_difficulty(enemy_type,
+                                                                                            self.difficulty, False)
+                else:
+                    print('ultima stanza!', i)
+                    room.combat_enemies, room.description = retrieve_enemies_for_difficulty(enemy_type,
+                                                                                            self.difficulty, True)
             self.rooms.append(room)
 
 

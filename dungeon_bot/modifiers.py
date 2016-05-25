@@ -269,6 +269,52 @@ class Pain(Modifier):  # simply adds defense, hinders evasion
         return msg
 
 
+class Intoxicated(Modifier):
+    priority = 0
+    duration = 3
+    damage = 0
+    characteristics_change = {"dexterity": - 1, "intelligence": - 2}
+    stats_change = {}
+    abilities_granted = []
+    tags_granted = []
+
+    def __init__(self, granted_by, host, stats={}, name="intoxicated",
+                 description="Loose 2 dexterity and intelligence."):
+        Modifier.__init__(self, granted_by, host, stats, name, description)
+        self.stats["characteristics_change"] = {"dexterity": - 1, "intelligence": - 2}
+        self.stats["duration"] = 3
+        self.damage = stats['damage']
+        print('danno totale:' + str(self.damage))
+
+    def can_apply(self):
+        return "animate" in self.host.tags and "living" in self.host.tags
+
+    def on_applied(self):
+        # msg = super(Fear, self).on_applied()
+        print('intoxxxxxx')
+        msg = "%s's got intoxicated!\n" % (self.host.short_desc.capitalize())
+        msg = "!!\t" + msg
+        return msg
+
+    def on_round(self):
+        msg = ""
+        if not self.host.dead:
+            dmg = self.damage / 3
+            msg += "!!\t%s looses %d hp due to intoxication.\n" % (
+                self.host.short_desc.capitalize(), dmg)
+            msg += self.host.damage(dmg, self.granted_by, True)
+            print(self.duration)
+        # msg += super(Intoxicated, self).on_round()
+
+        return msg
+
+    def on_lifted(self):
+        msg = "%s regains " % (self.host.short_desc.capitalize()) + \
+            "control over his emotions and is no longer in fear.\n"
+        msg = "!!\t" + msg
+        return msg
+
+
 class Fear(Modifier):
     priority = 0
     duration = 2
@@ -1068,10 +1114,9 @@ class Vampirism(Modifier):
 
 def get_modifier_by_name(modifier_name, source, target, stats={}):
     prototype = modifier_listing[modifier_name]
-
-    if not "duration" in stats.keys():
+    if "duration" not in stats.keys():
         stats["duration"] = prototype.duration
-    if not "characteristics_change" in stats.keys():
+    if "characteristics_change" not in stats.keys():
         stats["characteristics_change"] = \
             prototype.characteristics_change.copy()
     if not "stats_change" in stats.keys():
@@ -1139,6 +1184,7 @@ modifier_listing = {
     "pain": Pain,
     "burning": Burning,
     "fear": Fear,
+    "intoxicated": Intoxicated,
 
     "suffering": Suffering,
     "judgement": Judgement,

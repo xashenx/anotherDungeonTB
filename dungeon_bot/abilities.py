@@ -1703,6 +1703,131 @@ class MassPain(Ability):
         return Ability.use(attack_info)
 
 
+# class FartingAttack(Ability):
+#     """
+#     AOE applies a venomous dot to enemies
+#     """
+#     name = "farting attack"
+#     description = "What a dangerous smell."
+#     energy_required = 3
+#     requirements = None
+#     requires_target = "enemy"
+#
+#     @staticmethod
+#     def can_use(user, target=None):
+#         if not target:
+#             return False, "Target required."
+#         if not target.dead:
+#             return Ability.can_use(user, target, FartingAttack)
+#         else:
+#             return False, "Target is already dead."
+#
+#     @staticmethod
+#     def get_damage(user, target, weapon):
+#         # base_dmg = user.level * user.
+#         base_dmg = 0
+#         return base_dmg
+#
+#     @staticmethod
+#     def get_chance_to_hit(user, target, weapon):
+#         #intelligence = user.characteristics["intelligence"]
+#         #target_int = target.characteristics["intelligence"]
+#         #random_mult = diceroll("1d10")
+#         #chance_to_hit = clamp(clamp((intelligence - target_int), 1, 10)
+#             #* random_mult, 5, 95)
+#         chance_to_hit = 95
+#         return chance_to_hit
+#
+#     @staticmethod
+#     def get_dot_chance(use_info):
+#         chance = clamp(use_info.inhibitor.characteristics["intelligence"] * 7 - use_info.target.characteristics[
+#             "intelligence"] * 2, 5, 95)
+#         return chance
+#
+#     @staticmethod
+#     def get_modifiers_applied(use_info):
+#         if random.randint(1, 100) <= FartingAttack.get_dot_chance(use_info):
+#             dmg = use_info.inhibitor.level * use_info.inhibitor.characteristics["vitality"]
+#             modifier = get_modifier_by_name("fear", use_info.inhibitor, use_info.target, dmg)
+#             return [modifier]
+#         return []
+#
+#     @staticmethod
+#     def use(user, target, weapon, combat_event):
+#         attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event, None, "", 10)
+#         attack_info.use_info["item_used"] = None
+#         return Ability.use(attack_info)
+
+
+class FartingAttack(Ability):
+    """
+    AOE apply fear to enemies around
+    """
+    name = "farting attack"
+    description = "Deafening."
+    energy_required = 2
+    requirements = None
+    requires_target = "enemy"
+
+    @staticmethod
+    def can_use(user, target=None):
+        if not target:
+            return False, "Target required."
+        if not target.dead:
+            return Ability.can_use(user, target, FartingAttack)
+        else:
+            return False, "Target is already dead."
+
+    @staticmethod
+    def get_damage(user, target, weapon):
+        base_dmg = 0
+        #dmg = clamp( weapon_dmg * strength,
+            #user.characteristics["strength"] / 2, 99999999)
+        return base_dmg
+
+    @staticmethod
+    def get_chance_to_hit(user, target, weapon):
+        # **** BEGIN comment by Ashen -- not used lines -- ****
+        #intelligence = user.characteristics["intelligence"]
+        #target_int = target.characteristics["intelligence"]
+        # **** END comment ****
+        #random_mult = diceroll("1d10")
+        chance_to_hit = 95
+        return chance_to_hit
+
+    @staticmethod
+    def get_fear_chance(use_info):
+        # random_mult = diceroll("5d3")
+        # random_mult2 = diceroll("1d5")
+        # intelligence = use_info.inhibitor.characteristics["intelligence"]
+        # target_intelligence = use_info.target.characteristics["intelligence"]
+        # chance = clamp(intelligence * random_mult - target_intelligence
+        #     * random_mult2, 5, 95)
+        chance = 95
+        return chance
+
+    @staticmethod
+    def get_modifiers_applied(use_info):
+        if random.randint(1, 100) <= FartingAttack.get_fear_chance(use_info):
+            damage = use_info.inhibitor.level * use_info.inhibitor.characteristics["vitality"]
+            print('DEBUG:', damage, use_info.inhibitor.level, use_info.inhibitor.characteristics["vitality"])
+            stats = {
+                'damage': damage,
+            }
+            modifier = get_modifier_by_name("intoxicated", use_info.inhibitor, use_info.target, stats)
+            return [modifier]
+        return []
+
+    @staticmethod
+    # def use(user, target, weapon, combat_event):
+    def use(user, target, combat_event):
+        attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event,
+            None, "", clamp(int(user.characteristics["intelligence"] / 3),
+            1, 4))
+        attack_info.use_info["item_used"] = None
+        return Ability.use(attack_info)
+
+
 class FearScream(Ability):
     """
     AOE apply fear to enemies around
@@ -2069,4 +2194,6 @@ abilities_listing = {
     "animal bite": AnimalBite,
     "animal claw": AnimalClaw,
 
+    # boss abilities
+    "farting attack": FartingAttack,
 }
