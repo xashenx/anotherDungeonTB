@@ -1004,7 +1004,7 @@ class Creature(object):
         return big_dict
 
 class Player(Creature):
-    def __init__(self, userid, name, killing_blows=0,deaths=0, level=1, characteristics = default_characteristics, stats=None, description=None, inventory=[], equipment=default_equipment, tags=["animate", "living", "humanoid", "human"],abilities=[],modifiers=[], level_perks=[], experience=0, level_up_points=0, perk_points=0, last_read_notification_id = -1):
+    def __init__(self, userid, name, killing_blows=0, deaths=0, level=1, characteristics=default_characteristics, stats=None, description=None, inventory=[], equipment=default_equipment, tags=["animate", "living", "humanoid", "human"],abilities=[],modifiers=[], level_perks=[], experience=0, level_up_points=0, perk_points=0, last_read_notification_id = -1):
         self.level_perks = level_perks.copy()
         self._experience = experience
         self.level_up_points = level_up_points

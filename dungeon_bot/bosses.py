@@ -62,14 +62,13 @@ class FartingT(Enemy):
 
     def act(self, combat_event):
         attack_info = []
-        perform_intoxication = False
+        perform_intoxication = True
         if not self.target or self.target.dead:
             self.select_target(combat_event)
 
-        # print('playerssszz;', combat_event.players.modifiers)
         for player in combat_event.players:
-            if "intoxicated" not in [x.name for x in player.modifiers]:
-                perform_intoxication = True
+            if "intoxicated" in [x.name for x in player.modifiers] and not player.dead:
+                perform_intoxication = False
         if self.target and not self.target.dead:
             for ability in self.abilities:
                 if ability.__class__ == FartingAttack and not perform_intoxication:
@@ -87,7 +86,7 @@ class FartingT(Enemy):
         return attack_info
 
 
-def farting_t(right, left):
+def farting_t(left, right):
     levels = list(range(left, right))
     boss = FartingT(random.choice(levels))
     return [boss], boss.description

@@ -31,7 +31,7 @@ def retrieve_enemies_for_difficulty(enemy_table, difficulty, last_room):
     else:
         boss = boss_tables[enemy_table]["0"]
         minions = enemies[0](*enemies[1])
-        boss = boss(int(right), int(left))
+        boss = boss(int(left), int(right))
         print("boss stats: ",boss[0][0].level, boss[0][0].characteristics["dexterity"],
               boss[0][0].level * boss[0][0].characteristics["vitality"], boss[0][0].health)
         enemies = []
