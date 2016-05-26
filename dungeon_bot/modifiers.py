@@ -290,9 +290,8 @@ class Intoxicated(Modifier):
         return "animate" in self.host.tags and "living" in self.host.tags
 
     def on_applied(self):
-        # msg = super(Fear, self).on_applied()
-        print('intoxxxxxx')
-        msg = "%s's got intoxicated!\n" % (self.host.short_desc.capitalize())
+        msg = super(Intoxicated, self).on_applied()
+        msg += "%s's got intoxicated!\n" % (self.host.short_desc.capitalize())
         msg = "!!\t" + msg
         return msg
 
