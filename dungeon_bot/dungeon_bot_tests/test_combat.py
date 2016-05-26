@@ -126,7 +126,6 @@ def run_tests():
     # 	inp = input("type stop to stop")
     # 	if inp == "stop":
     #  		break
-    ply.base_abilities.append(Heal("heal", None))
     for enemy_table in list(enemy_tables.keys()):
         for diff in list(enemy_tables[enemy_table].keys()):
             enemies = enemy_tables[enemy_table][diff]
@@ -146,10 +145,13 @@ def run_tests():
     ply.inventory.append(item)
     ply.equip(item, True)
 
-    ply.base_characteristics["intelligence"] = 6
+    ply.base_characteristics["intelligence"] = 50
+    ply.base_characteristics["dexterity"] = 50
     ply.base_characteristics["vitality"] = 50
+    ply.base_abilities.append(FireBall("fire ball", None))
+    ply.base_abilities.append(MassPain("mass pain", None))
+    ply.base_abilities.append(Heal("heal", None))
     ply1.base_characteristics["vitality"] = 50
-
 
     dummy = Dummy(10)
 
