@@ -86,7 +86,6 @@ def diceroll(string, form_uniform=False, mode_loc = 0.9):
 
 def difficulty_check(target):
     result = diceroll("1d20")
-    print("=>>>>>>>>> DIFFICULTY CHECK: ", result, target)
     if result >= target:
         return True
     return False

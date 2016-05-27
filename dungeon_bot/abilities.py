@@ -1818,8 +1818,8 @@ class FartingAttack(Ability):
     def get_modifiers_applied(use_info):
         # if random.randint(1, 100) <= FartingAttack.get_fear_chance(use_info):
         damage = round(use_info.inhibitor.stats["max_health"] * 0.20)
-        inhibitor_vitality = use_info.inhibitor.characteristics["vitality"]
-        target_vitality = use_info.target.characteristics["vitality"]
+        inhibitor_modifier = use_info.inhibitor.characteristics["vitality"]
+        target_modifier = use_info.target.characteristics["vitality"]
         difficulty = 15 + int(math.floor(inhibitor_vitality / 2) - math.floor(target_vitality / 2))
         difficulty = max(difficulty, 8)
         stats = {

@@ -286,7 +286,6 @@ class Intoxicated(Modifier):
         self.stats["duration"] = 3
         self.damage = stats['damage']
         self.difficulty = stats['difficulty_check']
-        print('danno totale:' + str(self.damage), self.difficulty)
 
     def can_apply(self):
         return "animate" in self.host.tags and "living" in self.host.tags
@@ -299,7 +298,6 @@ class Intoxicated(Modifier):
 
     def on_round(self):
         msg = ""
-        print(self.host.name)
         if difficulty_check(self.difficulty):
             super(Intoxicated, self).lift()
             self.lifted = True
@@ -312,7 +310,6 @@ class Intoxicated(Modifier):
         else:
             msg += "!!\t%s isn't %s anymore.\n" % (self.host.short_desc.capitalize(), self.name)
         msg += super(Intoxicated, self).on_round()
-
         return msg
 
     def on_lifted(self):
