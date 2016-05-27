@@ -147,8 +147,8 @@ def run_tests():
 
     ply.base_characteristics["intelligence"] = 8
     ply.base_characteristics["dexterity"] = 8
-    ply.base_characteristics["vitality"] = 8
-    ply.base_characteristics["strength"] = 10
+    ply.base_characteristics["vitality"] = 7
+    ply.base_characteristics["strength"] = 7
     ply.base_abilities.append(FireBall("fire ball", None))
     ply.base_abilities.append(MassPain("mass pain", None))
     ply.base_abilities.append(Heal("heal", None))
@@ -169,7 +169,7 @@ def run_tests():
 
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
-    boss, desc = farting_t(1, 5)
+    boss, desc = farting_t(15, 25)
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)

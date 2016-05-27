@@ -18,8 +18,8 @@ default_equipment = {
 
 farting_t_characteristics = {
     "strength": 10,  # how hard you hit
-    "vitality": 14,  # how much hp you have
-    "dexterity": 6,  # how fast you act, your position in turn queue
+    "vitality": 10,  # how much hp you have
+    "dexterity": 5,  # how fast you act, your position in turn queue
     "intelligence": 5,  # how likely you are to strike a critical
 }
 

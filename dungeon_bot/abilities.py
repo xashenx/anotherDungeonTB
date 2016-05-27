@@ -1408,6 +1408,7 @@ class Heal(Ability):
     energy_required = 3
     requirements = None
     requires_target = "friendly"
+    healing_roll = None
 
     @staticmethod
     def can_use(user, target=None):
@@ -1421,9 +1422,8 @@ class Heal(Ability):
     @staticmethod
     def get_buff_modifiers(use_info):
         modifier_params = {"duration": 3, "healing chance": "10d5",
-            "healing amount": str(clamp(int(use_info.inhibitor.characteristics[
-            "intelligence"]), 7, 10)) + "d"
-            + str(use_info.inhibitor.characteristics["intelligence"])}
+                           "healing amount": str(clamp(int(use_info.inhibitor.characteristics["intelligence"]), 7, 10))
+                                             + "d" + str(use_info.inhibitor.characteristics["intelligence"])}
         modifier = get_modifier_by_name("regeneration", use_info.inhibitor,
             use_info.target, modifier_params)
         return [modifier]
@@ -1436,10 +1436,14 @@ class Heal(Ability):
 
     @staticmethod
     def use(user, target, weapon, combat_event):
+        healing_roll = str(clamp(int(user.characteristics["intelligence"]), 7, 10)) + "d"\
+                       + str(user.characteristics["intelligence"])
+        direct_healing_amount = diceroll(healing_roll)
+        target.health += direct_healing_amount
         buff_info = BuffInfo(user, Heal, target, combat_event)
         buff_info.use_info["item_used"] = None
-        buff_info.description += "%s casts a spell to heal %s.\n" % (
-            user.short_desc.capitalize(), target.short_desc.capitalize())
+        buff_info.description += "%s casts a spell to heal %s and regenerates %d hp\n" % (
+            user.short_desc.capitalize(), target.short_desc.capitalize(), direct_healing_amount)
         return Ability.use(buff_info)
 
 
@@ -1813,10 +1817,14 @@ class FartingAttack(Ability):
     @staticmethod
     def get_modifiers_applied(use_info):
         # if random.randint(1, 100) <= FartingAttack.get_fear_chance(use_info):
-        damage = use_info.inhibitor.level * use_info.inhibitor.characteristics["vitality"]
-        print('DEBUG:', damage, use_info.inhibitor.level, use_info.inhibitor.characteristics["vitality"])
+        damage = round(use_info.inhibitor.stats["max_health"] * 0.20)
+        inhibitor_vitality = use_info.inhibitor.characteristics["vitality"]
+        target_vitality = use_info.target.characteristics["vitality"]
+        difficulty = 15 + int(math.floor(inhibitor_vitality / 2) - math.floor(target_vitality / 2))
+        difficulty = max(difficulty, 8)
         stats = {
             'damage': damage,
+            'difficulty_check': difficulty,
         }
         modifier = get_modifier_by_name("intoxicated", use_info.inhibitor, use_info.target, stats)
         return [modifier]
@@ -1825,8 +1833,7 @@ class FartingAttack(Ability):
     @staticmethod
     # def use(user, target, weapon, combat_event):
     def use(user, target, weapon, combat_event):
-        attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event, None, "",
-                                    10)
+        attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event, None, "", 10)
                                     # clamp(int(user.characteristics["intelligence"] / 3), 1, 4))
         attack_info.use_info["item_used"] = None
         return Ability.use(attack_info)

@@ -20,6 +20,7 @@ class Modifier(object):
         self.host = host
         #duration: -1 means permanent, number above 0 means turns left
         self.stats = stats.copy()
+        self.lifted = False
 
     def apply(self):
         added = self.host.add_modifier(self)
@@ -274,7 +275,7 @@ class Intoxicated(Modifier):
     priority = 0
     duration = 3
     damage = 0
-    characteristics_change = {"dexterity": - 1, "intelligence": - 2}
+    characteristics_change = {}
     stats_change = {}
     abilities_granted = []
     tags_granted = []
@@ -282,10 +283,10 @@ class Intoxicated(Modifier):
     def __init__(self, granted_by, host, stats={}, name="intoxicated",
                  description="Loose 2 dexterity and intelligence."):
         Modifier.__init__(self, granted_by, host, stats, name, description)
-        self.stats["characteristics_change"] = {"dexterity": - 1, "intelligence": - 2}
         self.stats["duration"] = 3
         self.damage = stats['damage']
-        print('danno totale:' + str(self.damage))
+        self.difficulty = stats['difficulty_check']
+        print('danno totale:' + str(self.damage), self.difficulty)
 
     def can_apply(self):
         return "animate" in self.host.tags and "living" in self.host.tags
@@ -298,20 +299,25 @@ class Intoxicated(Modifier):
 
     def on_round(self):
         msg = ""
-        if not self.host.dead:
+        print(self.host.name)
+        if difficulty_check(self.difficulty):
+            super(Intoxicated, self).lift()
+            self.lifted = True
+        if not self.host.dead and not self.lifted:
             dmg = self.damage / 3
             msg += "!!\t%s looses %d hp due to intoxication.\n" % (
                 self.host.short_desc.capitalize(), dmg)
             msg += self.host.damage(dmg, self.granted_by, True)
             print(self.duration)
+        else:
+            msg += "!!\t%s isn't %s anymore.\n" % (self.host.short_desc.capitalize(), self.name)
         msg += super(Intoxicated, self).on_round()
 
         return msg
 
     def on_lifted(self):
-        print("*************** INTOXICATED LIFTED ***************")
         msg = "%s regains " % (self.host.short_desc.capitalize()) + \
-            "control over his emotions and is no longer in fear.\n"
+            "control over his emotions and is no longer intoxicated.\n"
         msg = "!!\t" + msg
         return msg
 
