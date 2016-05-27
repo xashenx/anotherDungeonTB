@@ -304,7 +304,7 @@ class Intoxicated(Modifier):
                 self.host.short_desc.capitalize(), dmg)
             msg += self.host.damage(dmg, self.granted_by, True)
             print(self.duration)
-        # msg += super(Intoxicated, self).on_round()
+        msg += super(Intoxicated, self).on_round()
 
         return msg
 

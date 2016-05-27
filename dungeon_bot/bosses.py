@@ -46,7 +46,7 @@ class FartingT(Enemy):
     def __init__(self, level=1, name="Farting T.",
                  characteristics=farting_t_characteristics, stats=None,
                  description="The Mighty Farting T., a two-headed ogre which is famous for is 'poisoning' attacks..",
-                 inventory=[], equipment=default_equipment, tags=["animate", "humanoid", "big"], abilities=[],
+                 inventory=[], equipment=default_equipment, tags=["living", "animate", "humanoid", "big"], abilities=[],
                  modifiers=[], exp_value=500):
         # print('vit', characteristics['vitality'])
         # characteristics['vitality'] = 0.28 * self.level

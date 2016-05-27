@@ -154,6 +154,8 @@ def run_tests():
     ply.base_abilities.append(Heal("heal", None))
     ply.base_abilities.append(FartingAttack("farting attack", None))
     ply1.base_characteristics["vitality"] = 50
+    ply1.base_abilities.append(FireBall("fire ball", None))
+    ply1.base_abilities.append(Heal("heal", None))
 
     dummy = Dummy(10)
 
@@ -168,7 +170,8 @@ def run_tests():
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
     boss, desc = farting_t(1, 5)
-    enemies, desc = merc_mages(["huge"])
-    bear = Bear(20)
-    enemies2 = Dummy(100)
-    controlled_combat_event([ply, ply1], boss + enemies + [bear] + [enemies2])
+    mages, desc = merc_mages(["huge"])
+    bear = Bear(50)
+    dummy = Dummy(100)
+    # controlled_combat_event([ply, ply1], boss + enemies + [bear] + [dummy])
+    controlled_combat_event([ply, ply1], boss)
