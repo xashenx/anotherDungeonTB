@@ -592,7 +592,7 @@ item_listing = {
                 "accuracy": ["1d6", "2d6"]
             },
             "args": {
-                "name": "stone maul",
+                "name": "a very very big maul",
                 "description": "The weapon of the Mighty Farting T., no other creature is supposed to be strong " +
                         "to use this weapon.",
                 "random_effects": True,

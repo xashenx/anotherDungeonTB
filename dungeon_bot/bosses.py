@@ -2,6 +2,7 @@
 from .creatures import Enemy, Player, Boss
 from .enemies import *
 from .items import *
+from .abilities import *
 import random
 
 
@@ -57,7 +58,6 @@ class FartingT(Enemy):
             if self.add_to_inventory(item):
                 self.equip(item, True)
 
-        # self.base_abilities.append(FearScream("fear scream", None))
         self.base_abilities.append(FartingAttack("farting attack", None))
 
     def act(self, combat_event):
@@ -75,7 +75,7 @@ class FartingT(Enemy):
                     continue
                 while self.energy >= ability.energy_required:
                     if ability.__class__ == FartingAttack:
-                        attack_info.append(FartingAttack.use(self, self.target, combat_event))
+                        attack_info.append(FartingAttack.use(self, self.target, ability.granted_by, combat_event))
                         break
                     else:
                         attack_info.append(ability.__class__.use(self, self.target, ability.granted_by, combat_event))

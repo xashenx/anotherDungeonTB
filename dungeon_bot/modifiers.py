@@ -263,6 +263,7 @@ class Pain(Modifier):  # simply adds defense, hinders evasion
         return msg
 
     def on_lifted(self):
+        print("*************** PAIN LIFTED ***************")
         msg = "%s is no longer in pain!\n" % (
             self.host.short_desc.capitalize())
         msg = "!!\t" + msg
@@ -308,6 +309,7 @@ class Intoxicated(Modifier):
         return msg
 
     def on_lifted(self):
+        print("*************** INTOXICATED LIFTED ***************")
         msg = "%s regains " % (self.host.short_desc.capitalize()) + \
             "control over his emotions and is no longer in fear.\n"
         msg = "!!\t" + msg
@@ -425,6 +427,7 @@ class Burning(Modifier):  # burning effect on the target (dot)
         return msg
 
     def on_lifted(self):
+        print("*************** BURNING LIFTED ***************")
         msg = "%s is no longer on fire!\n" % (self.host.short_desc.capitalize())
         msg = "!!\t" + msg
         return msg
@@ -558,7 +561,6 @@ class Regeneration(Modifier):  # simply adds defense, hinders evasion
     def on_round(self):
         chance = diceroll(self.stats["healing chance"])
         msg = ""
-        #print(chance)
         if random.randint(0, 100) < chance:
             heal = diceroll(self.stats["healing amount"])
             if self.host.health < self.host.stats["max_health"]:

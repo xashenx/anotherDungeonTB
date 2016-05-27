@@ -145,18 +145,21 @@ def run_tests():
     ply.inventory.append(item)
     ply.equip(item, True)
 
-    ply.base_characteristics["intelligence"] = 50
-    ply.base_characteristics["dexterity"] = 50
-    ply.base_characteristics["vitality"] = 50
+    ply.base_characteristics["intelligence"] = 8
+    ply.base_characteristics["dexterity"] = 8
+    ply.base_characteristics["vitality"] = 8
+    ply.base_characteristics["strength"] = 10
     ply.base_abilities.append(FireBall("fire ball", None))
     ply.base_abilities.append(MassPain("mass pain", None))
     ply.base_abilities.append(Heal("heal", None))
+    ply.base_abilities.append(FartingAttack("farting attack", None))
     ply1.base_characteristics["vitality"] = 50
 
     dummy = Dummy(10)
 
     ply.refresh_derived()
     ply1.refresh_derived()
+    # item = "stone maul"
     item = "dagger"
     item = get_item_by_name(item)
     ply.add_to_inventory(item)
@@ -164,7 +167,8 @@ def run_tests():
 
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
-    # enemies, desc = farting_t(1, 5)
-    # enemies, desc = merc_mages(["small"])
-    enemies, desc = bear(["small"])
-    controlled_combat_event([ply, ply1], enemies)
+    boss, desc = farting_t(1, 5)
+    enemies, desc = merc_mages(["huge"])
+    bear = Bear(20)
+    enemies2 = Dummy(100)
+    controlled_combat_event([ply, ply1], boss + enemies + [bear] + [enemies2])

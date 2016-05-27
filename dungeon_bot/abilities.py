@@ -191,22 +191,26 @@ class AttackInfo(AbilityUseInfo):
 
 
 class AoeAttackInfo(AbilityUseInfo):
-    def __init__(self, inhibitor, prototype_class, target, combat_event=None,
-        use_info=None, description="", max_targets=5):
+    def __init__(self, inhibitor, prototype_class, target, combat_event=None, use_info=None, description="",
+                 max_targets=5):
         AbilityUseInfo.__init__(self, inhibitor, "aoe_attack", prototype_class,
             target, combat_event)
         self.targets = [target]
-        for i in range(max_targets - 1):
-            cr = None
-            if hasattr(inhibitor, "exp_value"):
-                cr = random.choice([c for c in combat_event.turn_queue
-                    if not c.dead and not hasattr(c, "exp_value")])
-            else:
-                cr = random.choice([c for c in combat_event.turn_queue
-                    if not c.dead and hasattr(c, "exp_value")])
-
-            if cr and not cr in self.targets:
-                self.targets.append(cr)
+        # NEW TARGET SELECTION ALGORITHM BY ASHEN
+        if inhibitor in combat_event.enemies:  # means a monster is attacking the players
+            possible_targets = [c for c in combat_event.players if not c.dead]
+            # for c in possible_targets:
+            #     print(c.name, c.dead)
+        else:
+            possible_targets = [c for c in combat_event.enemies if not c.dead]
+            # for c in possible_targets:
+                # print(c.name, c.dead)
+        max_targets = min(max_targets, len(possible_targets))
+        while len(self.targets) < max_targets:
+            selected = random.choice(possible_targets)
+            if selected not in self.targets:
+                self.targets.append(selected)
+        # print('BERSAGLI: ', self.targets)
 
         self.description = description
         self.attack_infos = []
@@ -1792,7 +1796,7 @@ class FartingAttack(Ability):
         #target_int = target.characteristics["intelligence"]
         # **** END comment ****
         #random_mult = diceroll("1d10")
-        chance_to_hit = 95
+        chance_to_hit = 100
         return chance_to_hit
 
     @staticmethod
@@ -1803,27 +1807,27 @@ class FartingAttack(Ability):
         # target_intelligence = use_info.target.characteristics["intelligence"]
         # chance = clamp(intelligence * random_mult - target_intelligence
         #     * random_mult2, 5, 95)
-        chance = 95
+        chance = 100
         return chance
 
     @staticmethod
     def get_modifiers_applied(use_info):
-        if random.randint(1, 100) <= FartingAttack.get_fear_chance(use_info):
-            damage = use_info.inhibitor.level * use_info.inhibitor.characteristics["vitality"]
-            print('DEBUG:', damage, use_info.inhibitor.level, use_info.inhibitor.characteristics["vitality"])
-            stats = {
-                'damage': damage,
-            }
-            modifier = get_modifier_by_name("intoxicated", use_info.inhibitor, use_info.target, stats)
-            return [modifier]
-        return []
+        # if random.randint(1, 100) <= FartingAttack.get_fear_chance(use_info):
+        damage = use_info.inhibitor.level * use_info.inhibitor.characteristics["vitality"]
+        print('DEBUG:', damage, use_info.inhibitor.level, use_info.inhibitor.characteristics["vitality"])
+        stats = {
+            'damage': damage,
+        }
+        modifier = get_modifier_by_name("intoxicated", use_info.inhibitor, use_info.target, stats)
+        return [modifier]
+        # return []
 
     @staticmethod
     # def use(user, target, weapon, combat_event):
-    def use(user, target, combat_event):
-        attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event,
-            None, "", clamp(int(user.characteristics["intelligence"] / 3),
-            1, 4))
+    def use(user, target, weapon, combat_event):
+        attack_info = AoeAttackInfo(user, FartingAttack, target, combat_event, None, "",
+                                    10)
+                                    # clamp(int(user.characteristics["intelligence"] / 3), 1, 4))
         attack_info.use_info["item_used"] = None
         return Ability.use(attack_info)
 
