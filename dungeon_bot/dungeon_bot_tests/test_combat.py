@@ -112,9 +112,10 @@ def test_weapon_abilities():
         ply.strip()
         ply.clear_inventory()
 
+
 def run_tests():
-    ply = Player("player1", "testply1 the ply", 0, 0, 20)
-    ply1 = Player("player2", "testply2 the ply", 0, 0, 20)
+    ply = Player("player1", "testply1 the ply", 0, 0, 50)
+    ply1 = Player("player2", "testply2 the ply", 0, 0, 50)
     # itemname = "hermit cloak"
     # ply.level_perks.append(Knight(ply))
     # while(True):
@@ -153,7 +154,7 @@ def run_tests():
     ply.base_abilities.append(MassPain("mass pain", None))
     ply.base_abilities.append(Heal("heal", None))
     ply.base_abilities.append(FartingAttack("farting attack", None))
-    ply1.base_characteristics["vitality"] = 50
+    ply1.base_characteristics["vitality"] = 7
     ply1.base_abilities.append(FireBall("fire ball", None))
     ply1.base_abilities.append(Heal("heal", None))
 
@@ -169,7 +170,7 @@ def run_tests():
 
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
-    boss, desc = farting_t(15, 25)
+    boss, desc = farting_t(50, 55)
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)

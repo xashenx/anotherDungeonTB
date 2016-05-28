@@ -49,7 +49,7 @@ class FartingT(Enemy):
                  inventory=[], equipment=default_equipment, tags=["living", "animate", "humanoid", "big"], abilities=[],
                  modifiers=[], exp_value=500):
         # print('vit', characteristics['vitality'])
-        # characteristics['vitality'] = 0.28 * self.level
+        characteristics['vitality'] += math.floor(level / 10)
         # print('vit', characteristics['vitality'])
         Enemy.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities,
                        modifiers, exp_value)
