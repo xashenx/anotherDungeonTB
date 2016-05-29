@@ -116,6 +116,8 @@ def test_weapon_abilities():
 def run_tests():
     ply = Player("player1", "testply1 the ply", 0, 0, 15)
     ply1 = Player("player2", "testply2 the ply", 0, 0, 15)
+    ply2 = Player("player3", "testply3 the ply", 0, 0, 15)
+    ply3 = Player("player4", "testply4 the ply", 0, 0, 15)
     # itemname = "hermit cloak"
     # ply.level_perks.append(Knight(ply))
     # while(True):
@@ -176,4 +178,4 @@ def run_tests():
     bear = Bear(50)
     dummy = Dummy(100)
     # controlled_combat_event([ply, ply1], boss + enemies + [bear] + [dummy])
-    controlled_combat_event([ply, ply1], [uddu])
+    controlled_combat_event([ply, ply1, ply2, ply3], [uddu])
