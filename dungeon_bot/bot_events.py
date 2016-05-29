@@ -1288,8 +1288,8 @@ class CombatEvent(BotEvent):
         return msg + self.this_turn()
 
     def update_turn_queue(self):
-        alive_enemies =  list(filter(lambda c: not c.dead, self.enemies.copy()))
-        alive_players =  list(filter(lambda c: not c.dead, self.players.copy()))
+        alive_enemies = list(filter(lambda c: not c.dead, self.enemies.copy()))
+        alive_players = list(filter(lambda c: not c.dead, self.players.copy()))
         alive_creatures = alive_enemies + alive_players
         queue = sorted(alive_creatures, key=lambda x: x.characteristics["dexterity"], reverse=True)
         combat_logger.info("Combat queue:\n"+", ".join([""+str(i)+"."+queue[i].name for i in range(len(queue))]))

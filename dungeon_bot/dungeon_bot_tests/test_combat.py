@@ -4,7 +4,7 @@ import logging
 from .. import abilities
 from ..bot_events import *
 from ..util import *
-from ..enemies import *
+# from ..enemies import *
 from ..bosses import *
 from ..level_perks import *
 logger = logging.getLogger("dungeon_bot_test_log")
@@ -171,8 +171,9 @@ def run_tests():
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
     boss, desc = farting_t(10, 20)
+    uddu = Uddu(20)
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)
     # controlled_combat_event([ply, ply1], boss + enemies + [bear] + [dummy])
-    controlled_combat_event([ply, ply1], boss)
+    controlled_combat_event([ply, ply1], [uddu])

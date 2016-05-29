@@ -3,7 +3,7 @@
 # from ..abilities import abilities
 import logging
 # from util import diceroll, clamp
-from ..enemies import *
+from ..bosses import *
 
 logger = logging.getLogger("dungeon_bot_test_log")
 logger.debug("Test creatures loaded")
@@ -18,7 +18,7 @@ def test_get_enemies_for_difficulty():
 	enemies = retrieve_enemies_for_difficulty("animal", 20, False)
 	logger.info("Enemies for diff 20:%s"%(str(enemies)))
 
-	enemies = retrieve_enemies_for_difficulty("animal", 40, True)
+	enemies = retrieve_enemies_for_difficulty("human", 40, True)
 	logger.info("Enemies for diff 40:%s"%(str(enemies)))
 
 def run_tests():

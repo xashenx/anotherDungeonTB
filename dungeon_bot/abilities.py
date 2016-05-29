@@ -2,7 +2,6 @@
 from .util import clamp, diceroll
 import random
 from .modifiers import *
-from .enemies import *
 
 """
 Tags:
@@ -2193,6 +2192,14 @@ class CallThugs(Ability):
     requirements = None
     requires_target = None
 
+    @staticmethod
+    def get_damage(user, target, weapon):
+        return 0
+
+    @staticmethod
+    def get_chance_to_hit(user, target, weapon):
+        return 100
+
     def can_use(self, user, target=None):
         if not self.requires_target:
             return Ability.can_use(user, target, CallThugs)
@@ -2204,16 +2211,14 @@ class CallThugs(Ability):
             return False, "Target is already dead"
 
     @staticmethod
-    def get_modifiers_applied(use_info):
-        if random.randint(1, 100) <= AnimalBite.get_pain_chance(use_info):
-            modifier = get_modifier_by_name("reinforcements", use_info.inhibitor, use_info.target)
-            return [modifier]
-        return []
-
-    @staticmethod
     def use(user, target, weapon, combat_event):
-        attack_info = AttackInfo(user, AnimalBite, target)
-        attack_info.use_info["item_used"] = weapon
+        for thug in user.thugs:
+            thug.event = combat_event
+        combat_event.enemies += user.thugs
+        combat_event.turn_queue += user.thugs
+        combat_event.turn_queue = combat_event.update_turn_queue()
+        attack_info = AttackInfo(user, CallThugs, target)
+        attack_info.use_info["item_used"] = None
         return Ability.use(attack_info)
 
 # Abilities listing
@@ -2248,4 +2253,5 @@ abilities_listing = {
 
     # boss abilities
     "farting attack": FartingAttack,
+    "call thugs": CallThugs,
 }

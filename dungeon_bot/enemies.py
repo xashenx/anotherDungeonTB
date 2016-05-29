@@ -3,48 +3,9 @@ from .creatures import Enemy, Player
 from .abilities import *
 from .items import *
 from .util import *
-from .bosses import *
+# from .bosses import *
 import random
 
-
-def retrieve_enemies_for_difficulty(enemy_table, difficulty, last_room):
-    right = clamp(difficulty + 0.2 * difficulty, 0, 100)
-    left = clamp(difficulty - 0.2 * difficulty, 0, 100)
-    # total_len = 100
-    # candidates = []
-    temp_list = sorted([int(x) for x in list(enemy_tables[enemy_table].keys())
-                        if right >= int(x) > left])
-
-    if len(temp_list) == 0:
-        left = 0
-        temp_list = sorted([int(x) for x in
-                            list(enemy_tables[enemy_table].keys()) if right >= int(x) > left])
-
-    random_float = random_in_range_for_coolity(0, len(temp_list), 0.8)
-
-    random_enemy = temp_list[int(math.floor(random_float))]
-
-    enemies = enemy_tables[enemy_table][str(random_enemy)]
-    if not last_room or difficulty < 50:
-        print(enemies)
-        return enemies[0](*enemies[1])
-    else:
-        boss = boss_tables[enemy_table]["0"]
-        minions = enemies[0](*enemies[1])
-        boss = boss(int(left), int(right))
-        print("boss stats: ",boss[0][0].level, boss[0][0].characteristics["dexterity"],
-              boss[0][0].level * boss[0][0].characteristics["vitality"], boss[0][0].health)
-        enemies = []
-        # adding the boss
-        enemies.append(boss[0][0])
-        boss[0].append(boss[0][0])
-        for minion in minions[0]:
-            # adds each minion to the pack
-            enemies.append(minion)
-        # add the description of the boss
-        enemies = (enemies, boss[1])
-        print(enemies)
-        return enemies
 
 default_equipment = {
     "armor": None,
