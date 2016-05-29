@@ -114,8 +114,8 @@ def test_weapon_abilities():
 
 
 def run_tests():
-    ply = Player("player1", "testply1 the ply", 0, 0, 50)
-    ply1 = Player("player2", "testply2 the ply", 0, 0, 50)
+    ply = Player("player1", "testply1 the ply", 0, 0, 15)
+    ply1 = Player("player2", "testply2 the ply", 0, 0, 15)
     # itemname = "hermit cloak"
     # ply.level_perks.append(Knight(ply))
     # while(True):
@@ -170,7 +170,7 @@ def run_tests():
 
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
-    boss, desc = farting_t(50, 55)
+    boss, desc = farting_t(10, 20)
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)

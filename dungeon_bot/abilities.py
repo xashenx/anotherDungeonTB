@@ -2,6 +2,7 @@
 from .util import clamp, diceroll
 import random
 from .modifiers import *
+from .enemies import *
 
 """
 Tags:
@@ -2175,6 +2176,47 @@ class AnimalClaw(Ability):
         attack_info.use_info["item_used"] = weapon
         return Ability.use(attack_info)
 
+
+# Boss Abilities
+
+class CallThugs(Ability):
+    """
+    Uddu, King of Thugs
+    chance to hit = ?
+    avg chance to hit = ?
+    avg damage = ?
+    """
+
+    name = "call thugs"
+    description = "Call some thugs to help in battle."
+    energy_required = 3
+    requirements = None
+    requires_target = None
+
+    def can_use(self, user, target=None):
+        if not self.requires_target:
+            return Ability.can_use(user, target, CallThugs)
+        if not target:
+            return False, "Target required."
+        if not target.dead:
+            return Ability.can_use(user, target, CallThugs)
+        else:
+            return False, "Target is already dead"
+
+    @staticmethod
+    def get_modifiers_applied(use_info):
+        if random.randint(1, 100) <= AnimalBite.get_pain_chance(use_info):
+            modifier = get_modifier_by_name("reinforcements", use_info.inhibitor, use_info.target)
+            return [modifier]
+        return []
+
+    @staticmethod
+    def use(user, target, weapon, combat_event):
+        attack_info = AttackInfo(user, AnimalBite, target)
+        attack_info.use_info["item_used"] = weapon
+        return Ability.use(attack_info)
+
+# Abilities listing
 abilities_listing = {
     "smash": Smash,
     "shield up": ShieldUp,
