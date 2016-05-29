@@ -1211,8 +1211,8 @@ class CombatEvent(BotEvent):
         self.turn = 0
         msg = "".join([c.on_round() for c in self.turn_queue if not c.dead])
         msg += "Round %d.\n"%(self.round)
-        if self.turn_queue == []:
-            self.turn_queue = self.update_turn_queue()
+        # always perform a check on the order of the queue, for new insertions, buffs, etc
+        self.turn_queue = self.update_turn_queue()
 
 
         msg += self.get_printable_turn_queue()
