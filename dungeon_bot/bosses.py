@@ -25,14 +25,14 @@ def retrieve_enemies_for_difficulty(enemy_table, difficulty, last_room):
 
     enemies = enemy_tables[enemy_table][str(random_enemy)]
     if not last_room:
-        print(enemies)
+        # print(enemies)
         return enemies[0](*enemies[1])
     else:
         boss = boss_tables[enemy_table]["0"]
         minions = enemies[0](*enemies[1])
         boss = boss(int(left), int(right))
-        print("boss stats: ",boss[0][0].level, boss[0][0].characteristics["dexterity"],
-              boss[0][0].level * boss[0][0].characteristics["vitality"], boss[0][0].health)
+        # print("boss stats: ",boss[0][0].level, boss[0][0].characteristics["dexterity"],
+        #       boss[0][0].level * boss[0][0].characteristics["vitality"], boss[0][0].health)
         enemies = []
         # adding the boss
         enemies.append(boss[0][0])
@@ -42,7 +42,7 @@ def retrieve_enemies_for_difficulty(enemy_table, difficulty, last_room):
             enemies.append(minion)
         # add the description of the boss
         enemies = (enemies, boss[1])
-        print(enemies)
+        # print(enemies)
         return enemies
 
 

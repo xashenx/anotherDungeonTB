@@ -1279,7 +1279,6 @@ class MercenaryMage(Enemy):
         description="Fireball for hire,.", inventory=[],
         equipment=default_equipment, tags=["human", "living", "animate",
         "humanoid"], abilities=[], modifiers=[], exp_value=200):
-        print('mercenary mage selected!')
         Enemy.__init__(self, name, level, characteristics, stats, description,
             inventory, equipment, tags, abilities, modifiers, exp_value)
         items = [get_item_by_name(random.choice(["quaterstaff", "dagger"]), 0)]
@@ -1587,7 +1586,6 @@ def undead_soldier_pack(size=None, special_enemy=None):
         if random.randint(0, 10) < 7:
             troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
-            print('undead ninjaaa')
             troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
             troups += [UndeadKnight(random.choice(levels))]
@@ -1645,7 +1643,6 @@ def undead_legionaire_pack(size=None, special_enemy=None):
         if random.randint(0, 10) < 7:
             troups += [UndeadLegionaire(random.choice(levels))]
         elif random.randint(0, 10) < 5:
-            print('undead ninjaaa')
             troups += [UndeadNinjaPirate(random.choice(levels))]
         else:
             troups += [UndeadKnight(random.choice(levels))]

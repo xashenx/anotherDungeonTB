@@ -264,7 +264,6 @@ class Pain(Modifier):  # simply adds defense, hinders evasion
         return msg
 
     def on_lifted(self):
-        print("*************** PAIN LIFTED ***************")
         msg = "%s is no longer in pain!\n" % (
             self.host.short_desc.capitalize())
         msg = "!!\t" + msg
@@ -306,7 +305,6 @@ class Intoxicated(Modifier):
             msg += "!!\t%s looses %d hp due to intoxication.\n" % (
                 self.host.short_desc.capitalize(), dmg)
             msg += self.host.damage(dmg, self.granted_by, True)
-            print(self.duration)
         else:
             msg += "!!\t%s isn't %s anymore.\n" % (self.host.short_desc.capitalize(), self.name)
         msg += super(Intoxicated, self).on_round()
@@ -430,7 +428,6 @@ class Burning(Modifier):  # burning effect on the target (dot)
         return msg
 
     def on_lifted(self):
-        print("*************** BURNING LIFTED ***************")
         msg = "%s is no longer on fire!\n" % (self.host.short_desc.capitalize())
         msg = "!!\t" + msg
         return msg
