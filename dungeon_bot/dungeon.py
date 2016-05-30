@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import random
 from .util import *
-from .enemies import *
+from .bosses import *
 from . import settings
 import time
 
