@@ -261,7 +261,8 @@ class DungeonBot(object):
                     # logger.debug("Last update id is %d"%(self.last_update_id))
                     message = update.message
                     close_enough = self.time_started - datetime.timedelta(minutes=5)
-                    if datetime.datetime.fromtimestamp(message.date) >= close_enough:
+                    print(message.date >= close_enough, message.date, close_enough)
+                    if message.date >= close_enough:
                         if not message.text or not only_roman_chars(message.text):
                             self.api.sendMessage(message.from_user.id,
                                                  "There was some error processing your message." +
@@ -334,7 +335,7 @@ class DungeonBot(object):
             reply_markup = self.get_reply_markup(user)
 
         if reply_markup:
-            self.api.sendMessage(user.id, message, None, None, reply_markup)
+            self.api.sendMessage(user.id, message, reply_markup=reply_markup)
         else:
             self.api.sendMessage(user.id, message)
 
