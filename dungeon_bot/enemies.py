@@ -1277,8 +1277,8 @@ class MercenaryMage(Enemy):
     def __init__(self, level=1, name="mage",
         characteristics=mercenary_mage_characteristics, stats=None,
         description="Fireball for hire,.", inventory=[],
-        equipment=default_equipment, tags=["human", "living", "animate",
-        "humanoid"], abilities=[], modifiers=[], exp_value=200):
+        equipment=default_equipment, tags=["human", "living", "animate", "humanoid"], abilities=[], modifiers=[],
+                 exp_value=200):
         Enemy.__init__(self, name, level, characteristics, stats, description,
             inventory, equipment, tags, abilities, modifiers, exp_value)
         items = [get_item_by_name(random.choice(["quaterstaff", "dagger"]), 0)]
@@ -1297,15 +1297,13 @@ class MercenaryMage(Enemy):
 
     def act(self, combat_event):
         attack_infos = []
-
         for c in combat_event.enemies:
             if c.dead:
                 ability = [x for x in self.abilities if x.name == "revive"][0]
-                if self.energy >= ability.energy_required:
-                    attack_infos.append(ability.__class__.use(self,
-                        c, ability.granted_by, combat_event))
-            if not c.dead and c.health < c.stats["max_health"] and not \
-                "regeneration" in [modifier.name for modifier in c.modifiers]:
+                if self.energy >= ability.energy_required and ability.__class__.can_use(self, c)[0]:
+                    attack_infos.append(ability.__class__.use(self, c, ability.granted_by, combat_event))
+            if not c.dead and c.health < c.stats["max_health"] and \
+                            "regeneration" not in [modifier.name for modifier in c.modifiers]:
                 ability = [x for x in self.abilities if x.name == "heal"][0]
                 if self.energy >= ability.energy_required:
                     attack_infos.append(ability.__class__.use(self,
@@ -1315,10 +1313,8 @@ class MercenaryMage(Enemy):
             self.select_target(combat_event)
         if self.target and not self.target.dead:
             if len([enemy for enemy in combat_event.enemies if not enemy.dead]
-                ) > 0 and not "pain" in [
-                modifier.name for modifier in self.target.modifiers]:
-                ability = [
-                    x for x in self.abilities if x.name == "mass pain"][0]
+                ) > 0 and not "pain" in [modifier.name for modifier in self.target.modifiers]:
+                ability = [x for x in self.abilities if x.name == "mass pain"][0]
             else:
                 ability = [x for x in self.abilities if x.name == "fireball"][0]
             while self.energy >= ability.energy_required:

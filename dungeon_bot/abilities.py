@@ -1323,26 +1323,32 @@ class Revive(Ability):
     """
     name = "revive"
     description = "Revive a creature."
-    energy_required = 5
+    energy_required = 3
     requirements = None
     requires_target = "friendly"
 
     @staticmethod
     def can_use(user, target=None):
+        if not target:
+            return False, "Target required."
+        elif not target.dead:
+            return False, "Target is not dead."
+        elif "living" not in target.tags:
+            return False, "Target was not a living creature."
+        elif "resurrection sickness" in target.modifiers:
+            return False, "Target is still recovering from a previous resurrection."
         return Ability.can_use(user, target, Revive)
 
     @staticmethod
     def get_buff_modifiers(use_info):
-        #defense_bonus = use_info.use_info["item_used"].stats["defense"]
-        #modifier_params = {"stats_change": {"defense":defense_bonus}}
-        #modifier = get_modifier_by_name("shielded",
-        #    use_info.use_info["item_used"], use_info.target, modifier_params)
-        #return [modifier]
-        return []
+        modifier_params = {"duration": 3}
+        modifier = get_modifier_by_name("resurrection sickness", use_info.inhibitor, use_info.target, modifier_params)
+        return [modifier]
 
     @staticmethod
     def get_buff_description(use_info):
-        return ""
+        return "%s has been revived from %s!" % (use_info.target.short_desc.capitalize(),
+                                                 use_info.inhibitor.short_desc.capitalize())
 
     @staticmethod
     def use(user, target, weapon, combat_event):

@@ -155,10 +155,14 @@ def run_tests():
     ply.base_abilities.append(FireBall("fire ball", None))
     ply.base_abilities.append(MassPain("mass pain", None))
     ply.base_abilities.append(Heal("heal", None))
+    ply.base_abilities.append(Revive("revive", None))
     ply.base_abilities.append(FartingAttack("farting attack", None))
     ply1.base_characteristics["vitality"] = 7
     ply1.base_abilities.append(FireBall("fire ball", None))
     ply1.base_abilities.append(Heal("heal", None))
+    ply1.tags.remove("living")
+    ply2.tags.remove("living")
+    ply3.tags.remove("living")
 
     dummy = Dummy(10)
 
@@ -177,5 +181,6 @@ def run_tests():
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)
+    undead = UndeadSoldier(50)
     # controlled_combat_event([ply, ply1], boss + enemies + [bear] + [dummy])
-    controlled_combat_event([ply, ply1, ply2, ply3], [uddu])
+    controlled_combat_event([ply, ply1], mages + [undead])

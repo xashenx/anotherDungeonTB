@@ -317,6 +317,41 @@ class Intoxicated(Modifier):
         return msg
 
 
+class RessSickness(Modifier):
+    priority = 0
+    duration = 3
+    damage = 0
+    characteristics_change = {}
+    stats_change = {}
+    abilities_granted = []
+    tags_granted = []
+
+    def __init__(self, granted_by, host, stats={}, name="resurrection sickness",
+                 description="Has been recently revived."):
+        Modifier.__init__(self, granted_by, host, stats, name, description)
+        self.stats["duration"] = 3
+
+    def can_apply(self):
+        return "animate" in self.host.tags and "living" in self.host.tags
+
+    def on_applied(self):
+        msg = super(RessSickness, self).on_applied()
+        msg += "%s has been revived!\n" % (self.host.short_desc.capitalize())
+        msg = "!!\t" + msg
+        return msg
+
+    def on_round(self):
+        msg = ""
+        msg += super(RessSickness, self).on_round()
+        return msg
+
+    def on_lifted(self):
+        msg = "%s recovers " % (self.host.short_desc.capitalize()) + \
+            "from the negative effect of being resurrected.\n"
+        msg = "!!\t" + msg
+        return msg
+
+
 class Fear(Modifier):
     priority = 0
     duration = 2
@@ -1186,6 +1221,7 @@ modifier_listing = {
     "burning": Burning,
     "fear": Fear,
     "intoxicated": Intoxicated,
+    "resurrection sickness": RessSickness,
 
     "suffering": Suffering,
     "judgement": Judgement,
