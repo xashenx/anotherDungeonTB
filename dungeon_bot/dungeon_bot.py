@@ -261,7 +261,6 @@ class DungeonBot(object):
                     # logger.debug("Last update id is %d"%(self.last_update_id))
                     message = update.message
                     close_enough = self.time_started - datetime.timedelta(minutes=5)
-                    print(message.date >= close_enough, message.date, close_enough)
                     if message.date >= close_enough:
                         if not message.text or not only_roman_chars(message.text):
                             self.api.sendMessage(message.from_user.id,
@@ -333,7 +332,8 @@ class DungeonBot(object):
                     message += "\n" + notification["text"]
 
             reply_markup = self.get_reply_markup(user)
-
+        if "killed" in message:
+            print(message)
         if reply_markup:
             self.api.sendMessage(user.id, message, reply_markup=reply_markup)
         else:

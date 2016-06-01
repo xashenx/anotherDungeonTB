@@ -1347,7 +1347,7 @@ class Revive(Ability):
 
     @staticmethod
     def get_buff_description(use_info):
-        return "%s has been revived from %s!" % (use_info.target.short_desc.capitalize(),
+        return "%s has been revived from %s!\n" % (use_info.target.short_desc.capitalize(),
                                                  use_info.inhibitor.short_desc.capitalize())
 
     @staticmethod
