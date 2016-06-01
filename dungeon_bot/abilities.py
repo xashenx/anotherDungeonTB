@@ -1329,13 +1329,15 @@ class Revive(Ability):
 
     @staticmethod
     def can_use(user, target=None):
+        print(target.modifiers)
+        print(target.tags)
         if not target:
             return False, "Target required."
         elif not target.dead:
             return False, "Target is not dead."
         elif "living" not in target.tags:
             return False, "Target was not a living creature."
-        elif "resurrection sickness" in target.modifiers:
+        elif [x for x in target.modifiers if x.name == "resurrection sickness"]:
             return False, "Target is still recovering from a previous resurrection."
         return Ability.can_use(user, target, Revive)
 
