@@ -1329,8 +1329,6 @@ class Revive(Ability):
 
     @staticmethod
     def can_use(user, target=None):
-        print(target.modifiers)
-        print(target.tags)
         if not target:
             return False, "Target required."
         elif not target.dead:

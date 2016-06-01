@@ -156,6 +156,7 @@ def run_tests():
     ply.base_abilities.append(MassPain("mass pain", None))
     ply.base_abilities.append(Heal("heal", None))
     ply.base_abilities.append(Revive("revive", None))
+    ply1.base_abilities.append(Revive("revive", None))
     ply.base_abilities.append(FartingAttack("farting attack", None))
     ply1.base_characteristics["vitality"] = 7
     ply1.base_abilities.append(FireBall("fire ball", None))
@@ -176,11 +177,11 @@ def run_tests():
 
     #enemies = mercenary_pack
     # enemies, desc = mercenary_pack("medium")
-    boss, desc = farting_t(10, 20)
+    boss, desc = farting_t(50, 60)
     uddu = Uddu(20)
     mages, desc = merc_mages(["huge"])
     bear = Bear(50)
     dummy = Dummy(100)
     undead = UndeadSoldier(50)
     # controlled_combat_event([ply, ply1], boss + enemies + [bear] + [dummy])
-    controlled_combat_event([ply, ply1], mages + [undead])
+    controlled_combat_event([ply, ply1], boss)
