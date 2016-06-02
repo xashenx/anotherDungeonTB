@@ -1301,9 +1301,6 @@ class MercenaryMage(Enemy):
 
     def act(self, combat_event):
         attack_infos = []
-        print("----------------------")
-        print(self.short_desc)
-        print("----------------------")
         for c in combat_event.enemies:
             if c.dead:
                 ability = [x for x in self.abilities if x.name == "revive"][0]

@@ -2172,6 +2172,50 @@ class CallThugs(Ability):
         attack_info.use_info["item_used"] = None
         return Ability.use(attack_info)
 
+
+class Summon(Ability):
+    """
+    Count Gianpymir
+    chance to hit = ?
+    avg chance to hit = ?
+    avg damage = ?
+    """
+
+    name = "summon"
+    description = "Summon creatures."
+    energy_required = 3
+    requirements = None
+    requires_target = None
+
+    @staticmethod
+    def get_damage(user, target, weapon):
+        return 0
+
+    @staticmethod
+    def get_chance_to_hit(user, target, weapon):
+        return 100
+
+    def can_use(self, user, target=None):
+        if not self.requires_target:
+            return Ability.can_use(user, target, Summon)
+        if not target:
+            return False, "Target required."
+        if not target.dead:
+            return Ability.can_use(user, target, Summon)
+        else:
+            return False, "Target is already dead"
+
+    @staticmethod
+    def use(user, target, weapon, combat_event):
+        for creature in user.summons:
+            creature.event = combat_event
+        combat_event.enemies += user.summons
+        combat_event.turn_queue += user.summons
+        combat_event.turn_queue = combat_event.update_turn_queue()
+        attack_info = AttackInfo(user, Summon, target)
+        attack_info.use_info["item_used"] = None
+        return Ability.use(attack_info)
+
 # Abilities listing
 abilities_listing = {
     "smash": Smash,
@@ -2205,4 +2249,5 @@ abilities_listing = {
     # boss abilities
     "farting attack": FartingAttack,
     "call thugs": CallThugs,
+    "summon": Summon,
 }

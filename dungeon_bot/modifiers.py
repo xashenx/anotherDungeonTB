@@ -1099,7 +1099,7 @@ class HurtDemons(Modifier):
                 attack_info.description += "!!\t%s takes additional %d " % (
                     attack_info.target.short_desc.capitalize(),
                     additional_damage) + \
-                    "damage because of %s.\n" % elf.granted_by.name
+                    "damage because of %s.\n" % self.granted_by.name
         return attack_info
 
     @staticmethod
