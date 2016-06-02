@@ -1292,36 +1292,53 @@ class MercenaryMage(Enemy):
                 self.equip(item, True)
 
         spells = ["heal", "fireball", "lightning", "mass pain", "revive"]
+        self.priority_list = [(0, "mass pain"), (1, "fireball"), (1, "lightning")]
+        self.max_priority = 2
         for spell in spells:
             self.base_abilities.append(abilities_listing[spell](spell, None))
+        for ability in self.abilities:
+            self.priority_list.append((2, ability.name))
 
     def act(self, combat_event):
         attack_infos = []
+        print("----------------------")
+        print(self.short_desc)
+        print("----------------------")
         for c in combat_event.enemies:
             if c.dead:
                 ability = [x for x in self.abilities if x.name == "revive"][0]
                 if self.energy >= ability.energy_required and ability.__class__.can_use(self, c)[0]:
                     attack_infos.append(ability.__class__.use(self, c, ability.granted_by, combat_event))
-            if not c.dead and c.health < c.stats["max_health"] and \
-                            "regeneration" not in [modifier.name for modifier in c.modifiers]:
+            if not c.dead and c.health < c.stats["max_health"] and "regeneration" not in [modifier.name
+                                                                                          for modifier in c.modifiers]:
                 ability = [x for x in self.abilities if x.name == "heal"][0]
                 if self.energy >= ability.energy_required:
-                    attack_infos.append(ability.__class__.use(self,
-                        c, ability.granted_by, combat_event))
+                    attack_infos.append(ability.__class__.use(self, c, ability.granted_by, combat_event))
 
         if not self.target or self.target.dead:
             self.select_target(combat_event)
+
         if self.target and not self.target.dead:
-            if len([enemy for enemy in combat_event.enemies if not enemy.dead]
-                ) > 0 and not "pain" in [modifier.name for modifier in self.target.modifiers]:
-                ability = [x for x in self.abilities if x.name == "mass pain"][0]
-            else:
-                ability = [x for x in self.abilities if x.name == "fireball"][0]
-            while self.energy >= ability.energy_required:
-                attack_infos.append(ability.__class__.use(self,
-                    self.target, ability.granted_by, combat_event))
-                if not self.target or self.target.dead:
-                    break
+            for priority_level in range(0, self.max_priority + 1):
+                abilities = [ability_name for (priority, ability_name) in self.priority_list if
+                             priority == priority_level]
+                chosen = random.choice(abilities)
+                ability = [x for x in self.abilities if x.name == chosen][0]
+                if chosen == 'mass pain' and "pain" not in [modifier.name for modifier in self.target.modifiers]:
+                    attack_infos.append(ability.__class__.use(self,
+                                                              self.target, ability.granted_by, combat_event))
+                if priority_level == self.max_priority:
+                    # only one melee attack to keep some energy for spells
+                    # so far, this creature is a mage, not a melee fighter!
+                    attack_infos.append(ability.__class__.use(self,
+                                                              self.target, ability.granted_by, combat_event))
+                if priority_level == self.max_priority - 1:
+                    # lightning or fireball
+                    while self.energy >= ability.energy_required:
+                        attack_infos.append(ability.__class__.use(self,
+                                                                  self.target, ability.granted_by, combat_event))
+                        if not self.target or self.target.dead:
+                            break
         return attack_infos
 
 ogre_characteristics = {
