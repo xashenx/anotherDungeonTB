@@ -24,7 +24,7 @@ class Modifier(object):
 
     def apply(self):
         added = self.host.add_modifier(self)
-        if not added:
+        if added:
             msg = self.on_applied() + self.host.on_modifier_applied(self)
             return msg
         return ""
@@ -1208,11 +1208,66 @@ def get_random_modifiers_for_coolity(coolity):
             granted_modifiers.append(modifier_object)
     return granted_modifiers
 
+
+class Channeling(Modifier):  # channeling a spell
+    priority = 0
+    duration = 3
+    characteristics_change = {}
+    stats_change = {}
+    abilities_granted = []
+    tags_granted = ["channeling"]
+
+    def __init__(self, granted_by, host, stats={}, name="channeling",
+        description="Channels a powerful spell."):
+        Modifier.__init__(self, granted_by, host, stats, name, description)
+        self.stats["duration"] = stats['duration']
+        self.stats['spell_name'] = stats['spell_name']
+
+    def on_round(self):
+        msg = ""
+        if self.stats['spell_name'] == 'rite of exchange':
+            number_of_summons = len([c for c in self.host.event.players if not c.dead]) + 1
+            msg += "!!\t%d bloody imps are being summoned by %s!\n" % (number_of_summons,
+                                                                       self.host.short_desc.capitalize())
+        msg += super(Channeling, self).on_round()
+        return msg
+
+    def can_apply(self):
+        return True
+
+    def on_applied(self):
+        msg = super(Channeling, self).on_applied()
+        msg += "%s starts channeling %s!.\n" % (self.host.short_desc.capitalize(), self.stats['spell_name'])
+        msg = "!!\t" + msg
+        return msg
+
+    def on_lifted(self):
+        msg = "%s finished channeling %s!\n" % (self.host.short_desc.capitalize(), self.stats['spell_name'])
+        msg = "!!\t" + msg
+        if self.stats['spell_name'] == 'rite of exchange':
+            imp_list = [c for c in self.host.event.enemies if not c.dead and c.name == 'bloody imp']
+            total_health = 0
+            for imp in imp_list:
+                total_health += imp.health
+                imp.dead = True
+                imp.event = None
+                self.host.event.enemies.remove(imp)
+
+            #     TODO finish the evaluation of the damage and heal to distribute!
+            amount = int(total_health * 0.3)
+            msg += 'When the channeling of Rite of Exchange finishes, %s kills all the summoned imps'\
+                   % (self.host.short_desc.capitalize()) + ' and gets an heal of %d hp, while doing a damage to' \
+                                                           ' all his enemies of %d hp\n' % (amount, amount)
+            self.host.health += amount
+            for player in self.host.event.players:
+                if not player.dead:
+                    player.health -= amount
+        return msg
+
 modifier_listing = {
     "shielded": Shielded,
     "bonus": Bonus,
     "nerf": Nerf,
-
 
     "vunerable": Vunerable,
     "knockdown": KnockedDown,
@@ -1238,6 +1293,7 @@ modifier_listing = {
     "hurt undead": HurtUndead,
     "hurt demons": HurtDemons,
     "vampirism": Vampirism,
+    "channeling": Channeling,
 
 }
 

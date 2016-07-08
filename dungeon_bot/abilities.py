@@ -17,10 +17,10 @@ Tags:
     heavy armor - Heavy armored, takes little damage
     quick - Harder to hit and dodge
     slow - Easier to hit and dodge
-    physical ressitant - Resistant to physical damage
+    physical resistant - Resistant to physical damage
     fire resistant - self explanatory
     electricity resistant - self explanatory
-    magic ressitant - Resistant to magic damage
+    magic resistant - Resistant to magic damage
 
     undead - Undead creatures
     animal - Animal creatures
@@ -2216,6 +2216,54 @@ class Summon(Ability):
         attack_info.use_info["item_used"] = None
         return Ability.use(attack_info)
 
+
+class RiteOfExchange(Ability):
+    """
+    Count Gianpymir
+    chance to hit = ?
+    avg chance to hit = ?
+    avg damage = ?
+    """
+
+    name = "rite of exchange"
+    description = "An acient dark ritual."
+    energy_required = 3
+    requirements = None
+    requires_target = None
+
+    @staticmethod
+    def get_damage(user, target, weapon):
+        return 0
+
+    @staticmethod
+    def get_chance_to_hit(user, target, weapon):
+        return 100
+
+    def can_use(self, user, target=None):
+        if not self.requires_target:
+            return Ability.can_use(user, target, Summon)
+        if not target:
+            return False, "Target required."
+        if not target.dead:
+            return Ability.can_use(user, target, Summon)
+        else:
+            return False, "Target is already dead"
+
+    @staticmethod
+    def get_modifiers_applied(use_info):
+        stats = {
+            'spell_name': 'rite of exchange',
+            'duration': 2
+        }
+        modifier = get_modifier_by_name("channeling", use_info.inhibitor, use_info.inhibitor, stats)
+        return [modifier]
+
+    @staticmethod
+    def use(user, target, weapon, combat_event):
+        attack_info = AttackInfo(user, RiteOfExchange, user)
+        attack_info.use_info["item_used"] = None
+        return Ability.use(attack_info)
+
 # Abilities listing
 abilities_listing = {
     "smash": Smash,
@@ -2250,4 +2298,5 @@ abilities_listing = {
     "farting attack": FartingAttack,
     "call thugs": CallThugs,
     "summon": Summon,
+    "rite of exchange": RiteOfExchange,
 }

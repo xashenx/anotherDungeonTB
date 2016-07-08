@@ -73,7 +73,7 @@ class FartingT(Enemy):
     }
     loot_coolity = 0.9
 
-    def __init__(self, level=1, name="Farting T.",
+    def __init__(self, level=1, name="farting t.",
                  characteristics=default_boss_characteristics, stats=None,
                  description="The Mighty Farting T., a two-headed ogre which is famous for is 'poisoning' attacks..",
                  inventory=[], equipment=default_equipment, tags=["living", "animate", "humanoid", "big"], abilities=[],
@@ -142,7 +142,7 @@ class Uddu(Enemy):
     }
     loot_coolity = 0.9
 
-    def __init__(self, level=1, name="Uddu, King of Thugs",
+    def __init__(self, level=1, name="uddu, king of thugs",
                  characteristics=default_boss_characteristics, stats=None,
                  description="Uddu, the King of Thugs",
                  inventory=[], equipment=default_equipment, tags=["living", "animate", "humanoid", "big"], abilities=[],
@@ -220,7 +220,7 @@ class Gianpymir(Enemy):
     }
     loot_coolity = 0.9
 
-    def __init__(self, level=1, name="Gianpymir",
+    def __init__(self, level=1, name="gianpymir",
                  characteristics=default_boss_characteristics, stats=None,
                  description="Count Gianpymir, the Vampire",
                  inventory=[], equipment=default_equipment, tags=["undead", "animate", "humanoid"], abilities=[],
@@ -229,11 +229,8 @@ class Gianpymir(Enemy):
         characteristics['vitality'] = 4 + math.floor(level / 35)
         characteristics['dexterity'] = 6 + math.floor(level / 20)
         characteristics['intelligence'] = 7 + math.floor(level / 10)
-        # self.thugs_call = 3
-        # self.low_hp = False
-        # self.thugs = []
         self.summons = []
-        self.channeling = True
+        self.time_to_channel = 1
         Enemy.__init__(self, name, level, characteristics, stats, description, inventory, equipment, tags, abilities,
                        modifiers, exp_value)
         items = [get_item_by_name("ritual cloak", 0)]
@@ -242,42 +239,37 @@ class Gianpymir(Enemy):
             if self.add_to_inventory(item):
                 self.equip(item, True)
 
-        spells = ["lightning", "summon"]
+        spells = ["lightning", "rite of exchange"]
         self.creatures = []
-        self.priority_list = [(0, "summon"), (1, "lightning")]
+        self.priority_list = [(0, "rite of exchange"), (2, "vampirism aura"), (1, "lightning")]
         self.max_priority = 1
         for spell in spells:
             self.base_abilities.append(abilities_listing[spell](spell, None))
 
     def act(self, combat_event):
         attack_info = []
+        self.time_to_channel -= 1
         if not self.target or self.target.dead:
             self.select_target(combat_event)
-        # if "intoxicated" in [x.name for x in player.modifiers]
         for priority_level in range(0, self.max_priority + 1):
             abilities = [ability_name for (priority, ability_name) in self.priority_list if
                          priority == priority_level]
             chosen = random.choice(abilities)
             ability = [x for x in self.abilities if x.name == chosen][0]
-            if ability.__class__ == Summon:
-                if self.channeling:
-                    alive_players = [c for c in combat_event.players if not c.dead]
-                    number_of_summons = len(alive_players) + 1
-                    self.summons = []
-                    for i in range(0, number_of_summons):
-                        creature = Rat(self.level - 5)
-                        creature.name = "familiar"
-                        creature.description = "A familiar"
-                        self.summons += [creature]
-                    attack_info.append(ability.__class__.use(self, self.target, ability.granted_by, combat_event))
+            if ability.__class__ == RiteOfExchange:
+                if "channeling" not in [x.name for x in self.modifiers]:
+                    if self.time_to_channel == 0:
+                        self.time_to_channel = 3
+                        attack_info.append(ability.__class__.use(self, None, ability.granted_by, combat_event))
+                else:  # channeling action
+                    self.channeling_action()
                 continue
-            if self.target and not self.target.dead:
-                    if priority_level == self.max_priority:
-                        while self.energy >= ability.energy_required:
-                            attack_info.append(ability.__class__.use(self, self.target, ability.granted_by,
-                                                                     combat_event))
-                            if not self.target or self.target.dead:
-                                break
+            elif self.target and not self.target.dead and not "channeling" not in [x.name for x in self.modifiers]:
+                    while self.energy >= ability.energy_required:
+                        attack_info.append(ability.__class__.use(self, self.target, ability.granted_by,
+                                                                 combat_event))
+                        if not self.target or self.target.dead:
+                            break
         return attack_info
 
     def channeling_action(self):
@@ -287,8 +279,15 @@ class Gianpymir(Enemy):
         summons = []
         for i in range(0, number_of_summons):
             creature = Rat(self.level - 5)
+            creature.name = 'bloody imp'
+            creature.tags.remove('animal')
+            creature.tags.remove('rodent')
+            creature.tags.append('demon')
+            creature.tags.append('quick')
+            creature.tags.append('magic resistant')
+            creature.description = 'a bloody imp'
             creature.event = combat_event
-            summons += creature
+            summons += [creature]
         combat_event.enemies += summons
         combat_event.turn_queue += summons
         combat_event.turn_queue = combat_event.update_turn_queue()
@@ -309,7 +308,7 @@ boss_tables = {
         "0": farting_t,
     },
     "undead": {
-        "0": farting_t,
+        "0": count_gianpymir,
     },
     "demon": {
         "0": farting_t,
