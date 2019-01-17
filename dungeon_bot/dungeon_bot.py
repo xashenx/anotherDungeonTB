@@ -4,7 +4,7 @@ from .creatures import Player
 from .bot_events import *
 from .util import *
 from .level_perks import *
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardHide
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from .ladders import *
 import logging
 import datetime
@@ -319,11 +319,11 @@ class DungeonBot(object):
         if keyboard:
             markup = ReplyKeyboardMarkup(keyboard)
         else:
-            markup = ReplyKeyboardHide(True)
+            markup = ReplyKeyboardRemove(True)
         return markup
 
     def send_message(self, user, message):
-        reply_markup = ReplyKeyboardHide(True)
+        reply_markup = ReplyKeyboardRemove(True)
         if persistence_controller.is_registered(user):
             ply = persistence_controller.get_ply(user)
             for notification in self.notifications:

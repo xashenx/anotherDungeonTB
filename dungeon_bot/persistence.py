@@ -22,6 +22,7 @@ class PersistenceController(object):
 
 	def add_player(self, user, player):
 		self.players[str(user.id)] = player
+		print("New player: {}".format(player.name))
 
 	def get_ply(self, user):
 		if self.is_registered(user):

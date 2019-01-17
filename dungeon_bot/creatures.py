@@ -7,7 +7,7 @@ from .level_perks import *
 from . import settings
 import random
 
-from telegram import Emoji
+# from telegram import Emoji
 default_characteristics = {
     "strength": 5, #how hard you hit
     "vitality": 5, #how much hp you have
