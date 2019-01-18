@@ -5,6 +5,7 @@ from .bot_events import *
 from .util import *
 from .level_perks import *
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import ParseMode
 from .ladders import *
 import logging
 import datetime
@@ -142,6 +143,8 @@ class DungeonBot(object):
                 return persistence_controller.get_ply(user).examine_self()
         elif command in ["inventory", "inv"]:
             return self.open_inventory(user)
+        elif command in ["dungeons"]:
+            return self.list_active_crawlings()
         elif (command in ["level up", "lvl"]) or command == "level" and " ".join(args) == "up":
             return self.open_level_up(user)
         elif command in ["help", "info", "h"]:
@@ -291,7 +294,7 @@ class DungeonBot(object):
             ["help", "status", "chat"],
             ["lobbies", "join", "create 1"],
             ["examine self", "inventory", "level up"],
-            ["ladders", "close keyboard"],
+            ["ladders", "dungeons", "close keyboard"],
         ]
         return keyboard
 
@@ -332,12 +335,12 @@ class DungeonBot(object):
                     message += "\n" + notification["text"]
 
             reply_markup = self.get_reply_markup(user)
-        if "killed" in message:
-            print(message)
+        # if "killed" in message:
+        #     print(message)
         if reply_markup:
-            self.api.sendMessage(user.id, message, reply_markup=reply_markup)
+            self.api.sendMessage(user.id, message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
         else:
-            self.api.sendMessage(user.id, message)
+            self.api.sendMessage(user.id, message, parse_mode=ParseMode.HTML)
 
     def on_message(self, message):
         user = message.from_user
@@ -455,3 +458,28 @@ class DungeonBot(object):
             return lobby.add_user(user)
         else:
             return "The lobby is full or the game already started."
+        
+        
+    def list_active_crawlings(self):
+        dungeons = []
+        for key in list(DungeonBot.events.keys()):
+            if DungeonBot.events[key]:
+                dungeonLobby = DungeonBot.events[key]
+                dungeonCrawl = dungeonLobby.crawl
+                if dungeonCrawl:
+                    dungeon = dungeonCrawl.dungeon
+                    dung_desc = ''
+                    for player in dungeon.players:
+                        dung_desc += '<b>{}</b>, '.format(player.name.upper())
+                    dung_desc = dung_desc.rsplit(',', 1)[0]
+                    if len(dungeon.players) > 1:
+                        dung_desc += 'are exploring\n'
+                    else:
+                        dung_desc += 'is exploring '
+                    dung_desc += "{} [{}/{}]\n\n".format(dungeon.name, dungeon.current_room, len(dungeon.rooms))
+                    dungeons.append(dung_desc)
+        if len(dungeons) > 0:
+            dungeons.insert(0, "Our brave adventurers are now visiting:\n")
+        else:
+            dungeons.insert(0, "Our adventurers are having a break!")
+        return "\n".join(dungeons)
